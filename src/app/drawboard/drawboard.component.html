@@ -1,0 +1,48 @@
+<div #size>
+  <ul [ngStyle]="{'width':width+'px'}">
+      <li>
+        <a (click)=onDrawImage($event)>
+          <i class="fa fa-picture-o" aria-hidden="true"></i>
+        </a>
+      </li>
+
+      <li>
+        <a (click)=onEraseDraw($event)>
+          <i class="fa fa-eraser" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li>
+        <a (click)=onPencilColor($event)>
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li>
+        <a (click)=onClearDraw($event)>
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="dropdown" >
+          <a class="dropbtn">
+            <i class="fa fa-paint-brush" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-content" *ngFor="let item of color">
+              <a (click)="onSelectColor(item)" [style.background-color]="item"></a>
+          </div>
+      </li>
+      <li>
+        <a></a>
+      </li>
+
+      <li class="dropdown">
+        <a class="dropbtn">
+          <i class="fa fa-font" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-content" *ngFor="let item of font">
+          <a (click)=onSelectFont(item)>{{item}}</a>
+        </div>
+      </li>
+
+  </ul>
+  <canvas #canvas ></canvas>
+  <!--<img [src]="imgageSrc" *ngIf="imgageSrc" />-->
+</div>

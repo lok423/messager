@@ -1,0 +1,90 @@
+<div *ngIf="!selectedUser;then contact; else messager">
+</div>
+
+<ng-template #contact>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-sm-12">
+        <mat-card>
+          <mat-list>
+            <div *ngFor="let user of allUsersList">
+              <!--
+                  <mat-list-item class="contact" *ngIf="!user.channelid.includes(socketId)" (click)="selectUser(user)" >
+                  -->
+              <mat-list-item class="contact" *ngIf="!user.channelid.includes(socketId)" (click)="selectUser(user)">
+                <img mat-list-avatar src="https://api.adorable.io/avatars/285/{{user.userName}}.png" alt="Desc 1">
+                <h3 mat-line>{{user.userName}}</h3>
+
+                <div *ngIf="user.online==true">
+                  <p mat-line>(Online)</p>
+                </div>
+              </mat-list-item>
+            </div>
+
+          </mat-list>
+        </mat-card>
+
+        <!--{{userList|json}}-->
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #messager>
+  <div class="container messager-container">
+    <div class="row">
+      <div class="col-lg-4 col-sm-12">
+        <mat-card class="card-container" >
+          <mat-list style="width:100%">
+            <mat-list-item>
+              <img mat-list-avatar src="https://api.adorable.io/avatars/285/{{selectedUser.userName}}.png" alt="Desc 1">
+              <h3 mat-line>{{selectedUser.userName}}</h3>
+              <a href="#" (click)="selectedUser=null">back</a>
+            </mat-list-item>
+          </mat-list>
+            <div class="message-container">
+              <!--<ul class="list-group">-->
+              <ol class="chat" #scrollMe [scrollTop]="scrollMe.scrollHeight" *ngIf="messages.length > 0">
+                  <li [ngClass]="{'self': (message.senderName==username && selectedUser.userName==message.receiverName) , 'other': selectedUser.userName== message.senderName  }" *ngFor="let message of messages">
+                    <div class="msg" *ngIf=" message.msg ">
+                        <mat-list-item>
+                          <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
+                          <h3 mat-line class="user">{{message.senderName}}</h3>
+                          <p mat-line>{{ message.msg }}</p>
+                        </mat-list-item>
+                    </div>
+                    <div class="msg" *ngIf="message.drawImg">
+                        <mat-list-item>
+                          <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
+                          <h3 mat-line>{{message.senderName}}</h3>
+                          <img style="width:259px;" src="{{message.drawImg}}" width="100 " (click)="previewImg(message.drawImg)">
+                        </mat-list-item>
+                    </div>
+                  </li>
+              </ol>
+
+
+
+            </div>
+
+          <mat-card-actions>
+            <div class="">
+              <mat-icon>message</mat-icon>
+              <mat-form-field class="chat-input">
+                <input matInput #inputMessage maxlength="140" placeholder="Type your message" [(ngModel)]="messageContent" ngValue="emoji" (keyup.enter)="sendMessage(messageContent)">
+                <mat-hint align="end">{{inputMessage.value.length}}/140</mat-hint>
+              </mat-form-field>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div #drawZone class="col-lg-8 col-sm-12">
+        <app-drawboard (drawOutput)='handleDrawOutput($event)' [width]="400" [height]="400" ></app-drawboard>
+
+      </div>
+
+    </div>
+  </div>
+  <emoji-mart set="emojione" title="Learnspace™"  (emojiClick)="addEmojiText($event)"
+></emoji-mart>
+</ng-template>
