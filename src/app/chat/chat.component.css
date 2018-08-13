@@ -67,6 +67,10 @@
     background-color: lightgrey;
 }
 
+.hide-module{
+display: none;
+}
+
 
 /* M E S S A G E S */
 
@@ -236,5 +240,5 @@
 }
 
 .card-container{
-  height:500px;
+  
 }

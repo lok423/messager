@@ -46,20 +46,23 @@
               <!--<ul class="list-group">-->
               <ol class="chat" #scrollMe [scrollTop]="scrollMe.scrollHeight" *ngIf="messages.length > 0">
                   <li [ngClass]="{'self': (message.senderName==username && selectedUser.userName==message.receiverName) , 'other': selectedUser.userName== message.senderName  }" *ngFor="let message of messages">
-                    <div class="msg" *ngIf=" message.msg ">
-                        <mat-list-item>
-                          <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
-                          <h3 mat-line class="user">{{message.senderName}}</h3>
-                          <p mat-line>{{ message.msg }}</p>
-                        </mat-list-item>
-                    </div>
-                    <div class="msg" *ngIf="message.drawImg">
-                        <mat-list-item>
-                          <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
-                          <h3 mat-line>{{message.senderName}}</h3>
-                          <img style="width:259px;" src="{{message.drawImg}}" width="100 " (click)="previewImg(message.drawImg)">
-                        </mat-list-item>
-                    </div>
+<div *ngIf="(message.senderName==username && selectedUser.userName==message.receiverName)|| selectedUser.userName== message.senderName">
+  <div class="msg" *ngIf=" message.msg ">
+      <mat-list-item>
+        <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
+        <h3 mat-line class="user">{{message.senderName}}</h3>
+        <p mat-line>{{ message.msg }}</p>
+      </mat-list-item>
+  </div>
+  <div class="msg" *ngIf="message.drawImg">
+      <mat-list-item>
+        <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
+        <h3 mat-line>{{message.senderName}}</h3>
+        <img style="width:259px;" src="{{message.drawImg}}" width="100 " (click)="previewImg(message.drawImg)">
+      </mat-list-item>
+  </div>
+</div>
+
                   </li>
               </ol>
 
@@ -75,16 +78,25 @@
                 <mat-hint align="end">{{inputMessage.value.length}}/140</mat-hint>
               </mat-form-field>
             </div>
+            <!--<button type="button" name="button" (click)="drawboardEnable(drawboard)">drawboard</button>-->
+            <button mat-button (click)="draw(drawboard)">Draw picture</button>
+
           </mat-card-actions>
         </mat-card>
       </div>
       <div #drawZone class="col-lg-8 col-sm-12">
-        <app-drawboard (drawOutput)='handleDrawOutput($event)' [width]="400" [height]="400" ></app-drawboard>
+        {{drawZone.innerWidth}}
+
+        <div *ngIf="drawboard==true">
+          <br>
+          <app-drawboard id="drawboard" (drawOutput)='handleDrawOutput($event)' [width]="400" [height]="400" (drawboard)="closeDrawboard($event)" ></app-drawboard>
+        </div>
+
 
       </div>
 
     </div>
   </div>
-  <emoji-mart set="emojione" title="Learnspace™"  (emojiClick)="addEmojiText($event)"
-></emoji-mart>
+  <!--<emoji-mart set="emojione" title="Learnspace™"  (emojiClick)="addEmojiText($event)"
+></emoji-mart>-->
 </ng-template>

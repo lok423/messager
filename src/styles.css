@@ -1,1 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden !important;
+  touch-action: none !important;
+}

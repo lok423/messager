@@ -1,5 +1,8 @@
 canvas { border: 1px solid #000;
-   touch-action: none;
+  -ms-touch-action: none;
+touch-action: none;
+   overflow: hidden;
+   max-width: 100%;
 }
 ul {
    /* list-style-type: none;*/
@@ -7,10 +10,13 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: #333;
+    max-width: 100%;
+
 }
 
 li {
     float: left;
+    width: 50px;
 }
 
 li a, .dropbtn {
@@ -61,4 +67,14 @@ li.dropdown {
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+
+.toRight{
+    margin-left: 450px;
+}
+
+.size {
+  max-width: 100%;
+
 }

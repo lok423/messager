@@ -1,11 +1,12 @@
 <div #size>
   <ul [ngStyle]="{'width':width+'px'}">
+  <!--
       <li>
         <a (click)=onDrawImage($event)>
           <i class="fa fa-picture-o" aria-hidden="true"></i>
         </a>
       </li>
-
+-->
       <li>
         <a (click)=onEraseDraw($event)>
           <i class="fa fa-eraser" aria-hidden="true"></i>
@@ -14,11 +15,12 @@
       <li>
         <a (click)=onPencilColor($event)>
           <i class="fa fa-pencil" aria-hidden="true"></i>
+<!--
         </a>
       </li>
       <li>
         <a (click)=onClearDraw($event)>
-          <i class="fa fa-trash" aria-hidden="true"></i>
+          <i class="fa fa-trash" aria-hidden="true"></i>-->
         </a>
       </li>
       <li class="dropdown" >
@@ -42,7 +44,28 @@
         </div>
       </li>
 
+
+      <li>
+        <a></a>
+      </li>
+      <li>
+        <a (click)=onClearDraw($event)>
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </a>
+      </li>
+
+      <li>
+        <a (click)=onDrawImage($event)>
+          <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+        </a>
+      </li>
+
+      <li class="toRight">
+        <a (click)=closeDrowWin()>
+          <i class="fa fa-window-close" aria-hidden="true"></i>
+        </a>
+      </li>
   </ul>
-  <canvas #canvas ></canvas>
+  <canvas #canvas touch-action="none"></canvas>
   <!--<img [src]="imgageSrc" *ngIf="imgageSrc" />-->
 </div>

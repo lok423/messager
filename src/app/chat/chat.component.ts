@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChildren, ViewChild, AfterViewInit, QueryList, ElementRef, AfterViewChecked, AfterContentChecked,AfterContentInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MatList, MatListItem,MAT_DIALOG_DATA } from '@angular/material';
-
-
+import $ from 'jquery';
 
 //import { Action } from './shared/model/action';
 import { Event } from './shared/model/event';
@@ -21,7 +20,7 @@ const AVATAR_URL = 'https://api.adorable.io/avatars/285';
 export class ChatComponent implements OnInit {
 
 
-
+  drawboard=false;
   ioConnection: any;
   messageContent: string;
   socketId = null;
@@ -65,45 +64,37 @@ emoji=null;
     console.log(this.messages);
 
     console.log("drawZone", this.drawWidth,this.drawHeight);
-
-
-    //this.scrollToBottom();
-
-    //this.initModel();
     this.initIoConnection();
     // Using timeout due to https://github.com/angular/angular/issues/14748
     setTimeout(() => {
       //this.openUserPopup(this.defaultDialogUserParams);
     }, 0);
 
+    $(document).ready(function(){
+
+      //$('body').bind('touchmove', function(e){e.preventDefault()});
+    });
+    var box = document.querySelector('drawZone');
+    var width = $( window ).width();
+
+    //var width = $('drawZone').width();
+    console.log("width",width);
+
   }
 
 
-  // auto-scroll fix: inspired by this stack overflow post
-  // https://stackoverflow.com/questions/35232731/angular2-scroll-to-bottom-chat-style
-/*
-  private scrollToBottom(): void {
-    try {
-      var height = document.getElementById('scrollMe').scrollHeight+72;
-      //var height = this.scrollMe.nativeElement.scrollHeight;
-      //let scroll =this.scrollMe.nativeElement.scrollTop;
-      //scroll = height;
-      document.getElementById('scrollMe').scrollTop = height;
-    } catch (err) {
-      console.log(err);
-      console.log("scroll",this.scrollMe);
-
+  draw(drawboard) {
+    if(drawboard ==true){
+      this.drawboard=false;
+    }else{
+      this.drawboard=true;
     }
   }
 
-  scrollToBottom(): void {
-        try {
-            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        } catch(err) {
-console.log(this.myScrollContainer);
-        }
-    }
-    */
+  closeDrawboard(event){
+    this.drawboard=false;
+  }
+
 
   addEmojiText(emoji){
     this.input.nativeElement.focus();
@@ -122,7 +113,7 @@ console.log(this.myScrollContainer);
   selectUser(user){
     this.selectedUser=user;
     console.log(user);
-    
+
   }
 
   private loadOnlineUser(allUsers,userList){
