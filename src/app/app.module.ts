@@ -105,6 +105,7 @@ import {
   providers: [SocketService],
   bootstrap: [AppComponent],
   entryComponents: [PreviewImgComponent]//,
+  entryComponents: [PreviewImgComponent, DrawboardComponent]//,
   //exports: [DrawboardComponent]
 })
 export class AppModule { }

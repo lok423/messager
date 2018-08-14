@@ -80,11 +80,13 @@
             </div>
             <!--<button type="button" name="button" (click)="drawboardEnable(drawboard)">drawboard</button>-->
             <button mat-button (click)="draw(drawboard)">Draw picture</button>
+            <button mat-button (click)="draw()">Draw picture</button>
 
           </mat-card-actions>
         </mat-card>
       </div>
       <div #drawZone class="col-lg-8 col-sm-12">
+      <!-- <div #drawZone class="col-lg-8 col-sm-12">
         {{drawZone.innerWidth}}
 
         <div *ngIf="drawboard==true">
@@ -94,6 +96,7 @@
 
 
       </div>
+      </div> -->
 
     </div>
   </div>
