@@ -1,16 +1,19 @@
 import { Component, OnInit, ViewChildren, ViewChild, AfterViewInit, QueryList, ElementRef, AfterViewChecked, AfterContentChecked,AfterContentInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MatList, MatListItem,MAT_DIALOG_DATA } from '@angular/material';
 import $ from 'jquery';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 
 //import { Action } from './shared/model/action';
 import { Event } from './shared/model/event';
-import { Message, DrawImg } from './shared/model/message';
+import { Message, DrawImg, UploadFile } from './shared/model/message';
 //import { User } from './shared/model/user';
 import { SocketService } from './shared/services/socket.service';
 
 import { PreviewImgComponent } from '../preview-img/preview-img.component';
+import { HttpResponse } from '@angular/common/http';
 
 const AVATAR_URL = 'https://api.adorable.io/avatars/285';
+const upload_URL ='http://localhost:8080/api/upload-file';
 
 @Component({
   selector: 'app-chat',
@@ -46,6 +49,15 @@ export class ChatComponent implements OnInit {
 {channelid: '',userName: "ken",online:false}];
 emoji=null;
 @ViewChild('inputMessage') private input;
+@ViewChild('upload_input') input_file: ElementRef;
+
+selectedFile: File = null;
+uploadedPercentage = 0;
+showMessage = false;
+upload_message: String = '';
+showProgressBar = false;
+
+
 //@ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
 
@@ -57,7 +69,7 @@ emoji=null;
 
   constructor(private socketService: SocketService,
 
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,private http: HttpClient) { }
 
   ngOnInit(): void {
     this.username= window.prompt('Enter Your Name');
@@ -71,14 +83,13 @@ emoji=null;
     }, 0);
 
     $(document).ready(function(){
-
+      var box = document.querySelector('drawZone');
+      var width = $( window ).width();
+      //var width = $('drawZone').width();
+      console.log("width",width);
       //$('body').bind('touchmove', function(e){e.preventDefault()});
     });
-    var box = document.querySelector('drawZone');
-    var width = $( window ).width();
 
-    //var width = $('drawZone').width();
-    console.log("width",width);
 
   }
 
@@ -172,10 +183,17 @@ emoji=null;
   this.ioConnection = this.socketService.onDrawImg()
     .subscribe((img: DrawImg) => {
       this.messages.push(img);
-      console.log("receive draw:",img);
+      console.log("receive draw:");
       //this.scrollToBottom();
-
     });
+
+    this.ioConnection = this.socketService.onFile()
+      .subscribe((file: UploadFile) => {
+        this.messages.push(file);
+        console.log("receive file:",file);
+        //this.scrollToBottom();
+
+      });
 
 
 
@@ -269,7 +287,6 @@ public sendDrawImg(img: string): void {
   if (!img) {
     return;
   }
-
   this.socketService.sendDrawImg({
         fromid: this.socketId,
           toid : this.selectedUser.channelid,
@@ -280,7 +297,22 @@ public sendDrawImg(img: string): void {
         //createAt: Date.now(),
         selfsockets: this.selfsockets
   });
+}
 
+public sendFile(path: string): void {
+  if (!path) {
+    return;
+  }
+  this.socketService.sendFile({
+        fromid: this.socketId,
+          toid : this.selectedUser.channelid,
+        //msg : message,
+        file :path,
+        senderName : this.username,
+        receiverName : this.selectedUser.userName,
+        //createAt: Date.now(),
+        selfsockets: this.selfsockets
+  });
 }
 
 previewImg(img){
@@ -291,5 +323,107 @@ previewImg(img){
   });
 }
 
+/*
+uploadFile($event: any){
+  var fileUpload = this.input_file.nativeElement;
+  var files = fileUpload.files[0];
+  console.log("file",files);
 
+  if (files.length > 0){
+    // create a FormData object which will be sent as the data payload in the
+    // AJAX request
+    var formData = new FormData();
+
+    // loop through all the selected files and add them to the formData object
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+
+      // add the files to formData object for the data payload
+      formData.append('uploads[]', file, file.name);
+    }
+
+    $.ajax({
+      url: '/upload',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data){
+          console.log('upload successful!\n' + data);
+      },
+      xhr: function() {
+        // create an XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        // listen to the 'progress' event
+        xhr.upload.addEventListener('progress', function(evt) {
+
+          if (evt.lengthComputable) {
+            // calculate the percentage of upload completed
+            var percentComplete = evt.loaded / evt.total;
+            percentComplete = percentComplete * 100;
+
+            // update the Bootstrap progress bar with the new percentage
+            $('.progress-bar').text(percentComplete + '%');
+            $('.progress-bar').width(percentComplete + '%');
+
+            // once the upload reaches 100%, set the progress bar text to done
+            if (percentComplete === 100) {
+              $('.progress-bar').html('Done');
+            }
+          }
+        }, false);
+        return xhr;
+      }
+    });
+    }
+  }
+  */
+
+  onFileSelected(event) {
+    this.selectedFile = <File>event.target.files[0];
+  }
+
+  onUpload() {
+    const fd = new FormData();
+    this.showMessage = false;
+    console.log(this.selectedFile.name);
+    fd.append('file', this.selectedFile, this.selectedFile.name);
+    this.http.post(upload_URL, fd, {
+      reportProgress: true, observe: 'events'
+    }).subscribe( (event: HttpEvent<any>) => {
+      switch (event.type) {
+        case HttpEventType.Sent:
+          //this.slimLoadingBarService.start();
+          this.showProgressBar=true;
+          break;
+        case HttpEventType.Response:
+        console.log("response", event.body );
+          //this.slimLoadingBarService.complete();
+          this.upload_message = "Uploaded Successfully";
+          this.showMessage = true;
+          if(event.body.file_path){
+            var file_path = event.body.file_path;
+            this.sendFile(file_path);
+            //console.log(file_path);
+          }
+          this.showProgressBar=false;
+          this.uploadedPercentage=0;
+          break;
+        case 1: {
+          if (Math.round(this.uploadedPercentage) !== Math.round(event['loaded'] / event['total'] * 100)){
+            this.uploadedPercentage = event['loaded'] / event['total'] * 100;
+            //this.slimLoadingBarService.progress = Math.round(this.uploadedPercentage);
+          }
+          break;
+        }
+      }
+    },
+    error => {
+      console.log(error);
+      this.upload_message = "Something went wrong";
+      this.showMessage = true;
+      //this.slimLoadingBarService.reset();
+    });
+  }
 }

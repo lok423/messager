@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Observer } from 'rxjs';
-import { Message,DrawImg } from '../model/message';
+import { Message,DrawImg, UploadFile } from '../model/message';
 import { Event } from '../model/event';
 
 import * as socketIo from 'socket.io-client';
@@ -56,10 +56,19 @@ export class SocketService {
     public sendDrawImg(img: DrawImg): void {
         this.socket.emit('getDraw', img);
     }
+    public sendFile(file: UploadFile): void {
+        this.socket.emit('getFile', file);
+    }
 
     public onDrawImg(): Observable<DrawImg> {
         return new Observable<DrawImg>(observer => {
             this.socket.on('sendDrawImg', (data: DrawImg) => observer.next(data));
+        });
+    }
+
+    public onFile(): Observable<UploadFile> {
+        return new Observable<UploadFile>(observer => {
+            this.socket.on('sendFile', (data: UploadFile) => observer.next(data));
         });
     }
 }

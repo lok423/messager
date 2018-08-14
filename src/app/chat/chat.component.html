@@ -34,7 +34,7 @@
   <div class="container messager-container">
     <div class="row">
       <div class="col-lg-4 col-sm-12">
-        <mat-card class="card-container" >
+        <mat-card class="card-container">
           <mat-list style="width:100%">
             <mat-list-item>
               <img mat-list-avatar src="https://api.adorable.io/avatars/285/{{selectedUser.userName}}.png" alt="Desc 1">
@@ -42,33 +42,55 @@
               <a href="#" (click)="selectedUser=null">back</a>
             </mat-list-item>
           </mat-list>
-            <div class="message-container">
-              <!--<ul class="list-group">-->
-              <ol class="chat" #scrollMe [scrollTop]="scrollMe.scrollHeight" *ngIf="messages.length > 0">
-                  <li [ngClass]="{'self': (message.senderName==username && selectedUser.userName==message.receiverName) , 'other': selectedUser.userName== message.senderName  }" *ngFor="let message of messages">
-<div *ngIf="(message.senderName==username && selectedUser.userName==message.receiverName)|| selectedUser.userName== message.senderName">
-  <div class="msg" *ngIf=" message.msg ">
-      <mat-list-item>
-        <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
-        <h3 mat-line class="user">{{message.senderName}}</h3>
-        <p mat-line>{{ message.msg }}</p>
-      </mat-list-item>
-  </div>
-  <div class="msg" *ngIf="message.drawImg">
-      <mat-list-item>
-        <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
-        <h3 mat-line>{{message.senderName}}</h3>
-        <img style="width:259px;" src="{{message.drawImg}}" width="100 " (click)="previewImg(message.drawImg)">
-      </mat-list-item>
-  </div>
-</div>
+          <div class="message-container">
+            <!--<ul class="list-group">-->
+            <ol class="chat" #scrollMe [scrollTop]="scrollMe.scrollHeight" *ngIf="messages.length > 0">
+              <li [ngClass]="{'self': (message.senderName==username && selectedUser.userName==message.receiverName) , 'other': selectedUser.userName== message.senderName  }" *ngFor="let message of messages">
+                <div *ngIf="(message.senderName==username && selectedUser.userName==message.receiverName)|| selectedUser.userName== message.senderName">
+                  <div class="msg" *ngIf=" message.msg ">
+                    <mat-list-item>
+                      <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
+                      <h3 mat-line class="user">{{message.senderName}}</h3>
+                      <p mat-line>{{ message.msg }}</p>
+                    </mat-list-item>
+                  </div>
+                  <div class="msg" *ngIf="message.drawImg">
+                    <mat-list-item>
+                      <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
+                      <h3 mat-line>{{message.senderName}}</h3>
+                      <img style="width:259px;" src="{{message.drawImg}}" width="100 " (click)="previewImg(message.drawImg)">
+                    </mat-list-item>
+                  </div>
+                  <div class="msg" *ngIf="message.file">
+                    <mat-list-item>
+                      <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
+                      <h3 mat-line>{{message.senderName}}</h3>
+                      <i class="material-icons">
+          folder
+          </i>
+                      <a style="width:259px;" href="{{message.file}}" width="100 ">jj</a>
+                    </mat-list-item>
+                  </div>
+                </div>
 
-                  </li>
-              </ol>
+              </li>
+            </ol>
 
 
 
-            </div>
+          </div>
+          <div class="row" *ngIf="showProgressBar===true">
+            <i class="material-icons">
+folder
+</i>
+<mat-progress-bar
+          class="example-margin"
+          [color]="primary"
+          [mode]="determinate"
+          [value]="uploadedPercentage">
+      </mat-progress-bar>
+          </div>
+
 
           <mat-card-actions>
             <div class="">
@@ -80,16 +102,20 @@
             </div>
             <!--<button type="button" name="button" (click)="drawboardEnable(drawboard)">drawboard</button>-->
             <button mat-button (click)="draw(drawboard)">Draw picture</button>
+            <!--<input id="upload_input" #upload_input type="file" name="uploads[]" multiple="multiple" (change)="uploadFile($event)">-->
+            <input type="file" class="form-control-file" (change)="onFileSelected($event)">
+            <div *ngIf="selectedFile">
+              <button class="card-link" type="button" (click)="onUpload()">Upload</button>
+            </div>
+
 
           </mat-card-actions>
         </mat-card>
       </div>
       <div #drawZone class="col-lg-8 col-sm-12">
-        {{drawZone.innerWidth}}
-
         <div *ngIf="drawboard==true">
           <br>
-          <app-drawboard id="drawboard" (drawOutput)='handleDrawOutput($event)' [width]="400" [height]="400" (drawboard)="closeDrawboard($event)" ></app-drawboard>
+          <app-drawboard id="drawboard" (drawOutput)='handleDrawOutput($event)' [width]="400" [height]="400" (drawboard)="closeDrawboard($event)"></app-drawboard>
         </div>
 
 

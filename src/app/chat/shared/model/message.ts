@@ -34,3 +34,20 @@ export interface DrawImg {
     createAt?: number;
     */
 }
+
+export interface UploadFile {
+  toid : string,
+  fromid: string,
+	  //msg : string,
+	  senderName : string,
+    //createAt: any,
+    selfsockets: any,
+    receiverName: string,
+    file:string
+  /*
+    from?: User;
+    content?: any;
+    action?: Action;
+    createAt?: number;
+    */
+}

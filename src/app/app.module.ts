@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ChatComponent } from './chat/chat.component';
 import { DrawboardComponent } from './drawboard/drawboard.component';
@@ -51,13 +51,15 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
+import { UploaderComponent } from './uploader/uploader.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ChatComponent,
   DrawboardComponent,
-    PreviewImgComponent
+    PreviewImgComponent,
+    UploaderComponent
   ],
   imports: [
 
@@ -100,7 +102,8 @@ import {
     MaterialModule,
     PickerModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
   providers: [SocketService],
   bootstrap: [AppComponent],
