@@ -1,0 +1,100 @@
+<p>
+  Popovers can contain any arbitrary HTML, Angular bindings and even directives!
+  Simply enclose desired content in a <code>&lt;ng-template&gt;</code> element.
+</p>
+
+<!-- <ng-template #popContent>
+  Hello, <b>{{name}}</b>!
+  <app-chat></app-chat>
+</ng-template>
+
+<button id="chat-dropup2" type="button" class="btn btn-outline-primary" [ngbPopover]="popContent" [autoClose]="false" popoverTitle="Fancy content">
+  Chat
+
+</button> -->
+
+<br><br><br><br>
+
+<p>
+    很多网站右侧都有一个或多个悬浮的按钮，不管页面滑动到哪，它就在你眼皮底下，今天就来实现这个悬浮的button。
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    很多网站右侧都有一个或多个悬浮的按钮，不管页面滑动到哪，它就在你眼皮底下，今天就来实现这个悬浮的button。
+</p>
+
+<div ngbDropdown id="chat-dropup">
+  <button class="btn btn-outline-primary" id="dropdownConfig" ngbDropdownToggle>
+    <mat-icon>chat</mat-icon>
+    Chat
+  </button>
+  <div #scrollMe ngbDropdownMenu aria-labelledby="dropdownConfig" class="chat-drop-menu">
+    
+
+    <div class="container container-head">
+      <div class="btn-outline-primary pull-left head-button">Chat</div>
+      <div style="text-align:right;">
+        <button class="btn-outline-primary head-button">
+          <mat-icon class="" [inline]="true">group_add</mat-icon>
+        </button>
+        <button class="btn-outline-primary head-button">
+          <mat-icon class="" [inline]="true">videocam</mat-icon>
+        </button>
+        <button class="btn-outline-primary head-button">
+          <mat-icon class="" [inline]="true">close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="message2"> 
+      Demos 代码演示、代码片段 
+      
+    </div>
+
+    <app-chat></app-chat>
+    
+    <hr>
+    <ng-template #popContent>
+        <emoji-mart set="emojione" title="Learnspace™"  (emojiClick)="addEmojiText($event)"></emoji-mart>
+      </ng-template>
+      <button type="button" (click)="$event.stopPropagation();" style=" border: 0;  outline: none;"  [ngbPopover]="popContent" >
+        <mat-icon>mood</mat-icon>
+      </button>
+  </div>
+</div>
+
+<!-- <button mat-icon-button [matMenuTriggerFor]="menu" id="chat-dropup2">
+  <mat-icon class="material-icons blue600">chat</mat-icon>
+  <span>Chat</span>
+</button>
+<mat-menu #menu="matMenu" [overlapTrigger]="false" id="my-mat-menu">
+  <div class="container" (click)="$event.stopPropagation();">
+    <div class="row">
+      <div class="btn-group">
+        <div class="col-6 col-sm-6">
+          Chat
+        </div>
+        
+        
+        <button mat-menu-item>
+          <mat-icon class="material-icons md-dark col-3 col-sm-3" >videocam</mat-icon>
+        </button>
+        <button mat-menu-item (click)="closeMyMenu()">
+          <mat-icon class="material-icons md-dark col-3 col-sm-3">close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default col-3">
+      <mat-icon>settings</mat-icon>
+    </button>
+    <button type="button" class="btn btn-default col-3">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button type="button" class="btn btn-default col-3">
+      <mat-icon>call</mat-icon>
+    </button>
+  </div>
+  
+  <app-chat></app-chat>
+</mat-menu> -->
