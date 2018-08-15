@@ -17,6 +17,8 @@ import { SocketService } from './chat/shared/services/socket.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 import {
   MatAutocompleteModule,
 
@@ -51,7 +53,11 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
+<<<<<<< HEAD
 import { UploaderComponent } from './uploader/uploader.component';
+=======
+import { DashboardComponent } from './dashboard/dashboard.component';
+>>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
 
 @NgModule({
   declarations: [
@@ -59,7 +65,11 @@ import { UploaderComponent } from './uploader/uploader.component';
     ChatComponent,
   DrawboardComponent,
     PreviewImgComponent,
+<<<<<<< HEAD
     UploaderComponent
+=======
+    DashboardComponent
+>>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
   ],
   imports: [
 
@@ -103,11 +113,15 @@ import { UploaderComponent } from './uploader/uploader.component';
     PickerModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+<<<<<<< HEAD
     HttpClientModule
+=======
+    NgbModule
+>>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
   ],
   providers: [SocketService],
   bootstrap: [AppComponent],
-  entryComponents: [PreviewImgComponent]//,
+  entryComponents: [PreviewImgComponent, DrawboardComponent]//,
   //exports: [DrawboardComponent]
 })
 export class AppModule { }

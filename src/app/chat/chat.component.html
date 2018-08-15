@@ -1,11 +1,11 @@
 <div *ngIf="!selectedUser;then contact; else messager">
 </div>
 
-<ng-template #contact>
+<ng-template #contact >
   <div class="container">
     <div class="row">
-      <div class="col-lg-4 col-sm-12">
-        <mat-card>
+      <div class="col-lg-12 col-sm-12">
+        
           <mat-list>
             <div *ngFor="let user of allUsersList">
               <!--
@@ -22,7 +22,7 @@
             </div>
 
           </mat-list>
-        </mat-card>
+        
 
         <!--{{userList|json}}-->
       </div>
@@ -33,15 +33,22 @@
 <ng-template #messager>
   <div class="container messager-container">
     <div class="row">
+<<<<<<< HEAD
       <div class="col-lg-4 col-sm-12">
         <mat-card class="card-container">
+=======
+      <div class="col-lg-12 col-sm-12">
+       
+>>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
           <mat-list style="width:100%">
             <mat-list-item>
               <img mat-list-avatar src="https://api.adorable.io/avatars/285/{{selectedUser.userName}}.png" alt="Desc 1">
               <h3 mat-line>{{selectedUser.userName}}</h3>
-              <a href="#" (click)="selectedUser=null">back</a>
+              <!-- <a href="#" (click)="selectedUser=null">back</a> -->
+              <button class="btn btn-outline-primary" id="backbutton" (click)="selectedUser=null">back</button>
             </mat-list-item>
           </mat-list>
+<<<<<<< HEAD
           <div class="message-container">
             <!--<ul class="list-group">-->
             <ol class="chat" #scrollMe [scrollTop]="scrollMe.scrollHeight" *ngIf="messages.length > 0">
@@ -72,12 +79,44 @@
                     </mat-list-item>
                   </div>
                 </div>
+=======
+            <div class="message-container">
+              <!--<ul class="list-group">-->
+              <ol class="chat" #scrollMe [scrollTop]="scrollMe.scrollHeight" *ngIf="messages.length > 0">
+                  <li [ngClass]="{'self': (message.senderName==username && selectedUser.userName==message.receiverName) , 'other': selectedUser.userName== message.senderName  }" *ngFor="let message of messages">
+<div *ngIf="(message.senderName==username && selectedUser.userName==message.receiverName)|| selectedUser.userName== message.senderName">
+  <div  *ngIf=" message.msg ">
+      <img mat-list-avatar style="width:30px; height: 30px; border-radius: 5px;" src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">
+      <mat-list-item>
+        <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
+        
+        <div class="msg">
+          <h3 mat-line class="user">{{message.senderName}}</h3>
+          <p mat-line>{{ message.msg }}</p>
+        </div>
+        
+      </mat-list-item>
+  </div>
+  <div class="msg" *ngIf="message.drawImg">
+      <mat-list-item>
+        <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{selectedUser.userName}}.png" alt="Desc 1">-->
+        <img mat-list-avatar class="btn-outline-primary pull-left" style="width:15px; height: 15px;" src="https://api.adorable.io/avatars/285/{{selectedUser.userName}}.png" alt="Desc 1">
+        <div >
+          <h3 mat-line>{{message.senderName}}</h3>
+          <img style="width:259px;" src="{{message.drawImg}}" width="100 " (click)="previewImg(message.drawImg)">
+        </div>
+        
+      </mat-list-item>
+  </div>
+</div>
+>>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
 
               </li>
             </ol>
 
 
 
+<<<<<<< HEAD
           </div>
           <div class="row" *ngIf="showProgressBar===true">
             <i class="material-icons">
@@ -91,8 +130,42 @@ folder
       </mat-progress-bar>
           </div>
 
+=======
+            </div>
+           
+            <!-- The function panel, such as emoji, upload buttons -->
+            <div>
+              <hr>
+              <button style=" border: 0;  outline: none;" ngbPopover="Send a photo" triggers="mouseenter:mouseleave" placement="right">
+                <mat-icon>add_photo_alternate</mat-icon>
+              </button>
+              
+              <button (click)="openEmoji(emoji_status)" style=" border: 0;  outline: none;" ngbPopover="Send emoji" triggers="mouseenter:mouseleave">
+                <mat-icon>mood</mat-icon>
+              </button>
 
-          <mat-card-actions>
+              <ng-template #popContent>
+                <emoji-mart set="emojione" title="Learnspace™"  (emojiClick)="addEmojiText($event)"></emoji-mart>
+              </ng-template>
+              <button type="button" (click)="$event.stopPropagation();" style=" border: 0;  outline: none;"  [ngbPopover]="popContent" >
+                <mat-icon>mood</mat-icon>
+              </button>
+             
+              <button style=" border: 0;  outline: none;" ngbPopover="Upload a file" triggers="mouseenter:mouseleave">
+                <mat-icon>attach_file</mat-icon>
+              </button>
+              
+              <button (click)="draw(drawboard)" style=" border: 0;  outline: none;" ngbPopover="Create a calendar" triggers="mouseenter:mouseleave" >
+                <mat-icon>border_color</mat-icon>
+              </button>
+            
+              <button style="border: 0; outline: none;" ngbPopover="Create a calendar" triggers="mouseenter:mouseleave">
+                <mat-icon color="accent" >calendar_today</mat-icon>
+              </button>
+              
+>>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
+
+            </div>
             <div class="">
               <mat-icon>message</mat-icon>
               <mat-form-field class="chat-input">
@@ -101,6 +174,7 @@ folder
               </mat-form-field>
             </div>
             <!--<button type="button" name="button" (click)="drawboardEnable(drawboard)">drawboard</button>-->
+<<<<<<< HEAD
             <button mat-button (click)="draw(drawboard)">Draw picture</button>
             <!--<input id="upload_input" #upload_input type="file" name="uploads[]" multiple="multiple" (change)="uploadFile($event)">-->
             <input type="file" class="form-control-file" (change)="onFileSelected($event)">
@@ -108,21 +182,31 @@ folder
               <button class="card-link" type="button" (click)="onUpload()">Upload</button>
             </div>
 
+=======
+>>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
 
-          </mat-card-actions>
-        </mat-card>
+          
       </div>
       <div #drawZone class="col-lg-8 col-sm-12">
+<<<<<<< HEAD
+=======
+      <!-- <div #drawZone class="col-lg-8 col-sm-12">
+        {{drawZone.innerWidth}}
+
+>>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
         <div *ngIf="drawboard==true">
           <br>
           <app-drawboard id="drawboard" (drawOutput)='handleDrawOutput($event)' [width]="400" [height]="400" (drawboard)="closeDrawboard($event)"></app-drawboard>
         </div>
 
 
-      </div>
+      </div>-->
+      </div> 
 
     </div>
   </div>
-  <!--<emoji-mart set="emojione" title="Learnspace™"  (emojiClick)="addEmojiText($event)"
-></emoji-mart>-->
+  <div *ngIf="emoji_status==true">
+    <emoji-mart set="emojione" title="Learnspace™"  (emojiClick)="addEmojiText($event)"></emoji-mart>
+  </div>
+ 
 </ng-template>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, ViewChild, AfterViewInit, QueryList, ElementRef, AfterViewChecked, AfterContentChecked,AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, ViewChild, AfterViewInit, QueryList, ElementRef, AfterViewChecked, AfterContentChecked,AfterContentInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MatList, MatListItem,MAT_DIALOG_DATA } from '@angular/material';
 import $ from 'jquery';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
@@ -9,6 +9,7 @@ import { Message, DrawImg, UploadFile } from './shared/model/message';
 //import { User } from './shared/model/user';
 import { SocketService } from './shared/services/socket.service';
 
+import { DrawboardComponent } from '../drawboard/drawboard.component';
 import { PreviewImgComponent } from '../preview-img/preview-img.component';
 import { HttpResponse } from '@angular/common/http';
 
@@ -48,7 +49,8 @@ export class ChatComponent implements OnInit {
 {channelid: '',userName: "mike",online:false},
 
 {channelid: '',userName: "ken",online:false}];
-emoji=null;
+@Input() emoji=null;
+@Input() emoji_status=false;
 @ViewChild('inputMessage') private input;
 @ViewChild('upload_input') input_file: ElementRef;
 
@@ -95,11 +97,24 @@ showProgressBar = false;
   }
 
 
+
   draw(drawboard) {
     if(drawboard ==true){
       this.drawboard=false;
     }else{
       this.drawboard=true;
+    }
+    const dialogRef = this.dialog.open(DrawboardComponent, {
+      width: (document.body.clientWidth) + 'px',
+    });
+    console.log('-----' + document.body.clientWidth );
+  }
+
+  openEmoji(emoji_status) {
+    if(emoji_status ==true){
+      this.emoji_status=false;
+    }else{
+      this.emoji_status=true;
     }
   }
 
@@ -107,6 +122,9 @@ showProgressBar = false;
     this.drawboard=false;
   }
 
+  closeEmoji(event) {
+    this.emoji_status=false;
+  }
 
   addEmojiText(emoji){
     this.input.nativeElement.focus();
