@@ -17,6 +17,8 @@ import { SocketService } from './chat/shared/services/socket.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 import {
   MatAutocompleteModule,
 
@@ -51,13 +53,15 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ChatComponent,
   DrawboardComponent,
-    PreviewImgComponent
+    PreviewImgComponent,
+    DashboardComponent
   ],
   imports: [
 
@@ -100,7 +104,8 @@ import {
     MaterialModule,
     PickerModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgbModule
   ],
   providers: [SocketService],
   bootstrap: [AppComponent],

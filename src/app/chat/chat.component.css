@@ -177,7 +177,7 @@ display: none;
     content: "";
     position: relative;
     display: inline-block;
-    float: right;
+    /* float: right; */
     bottom: 0px;
     right: 0px;
     width: 0px;
@@ -239,6 +239,10 @@ display: none;
     -ms-user-select: none;
 }
 
+#backbutton {
+    width: 80px;
+}
+/* 
 .card-container{
   
-}
+} */

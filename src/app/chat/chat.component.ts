@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, ViewChild, AfterViewInit, QueryList, ElementRef, AfterViewChecked, AfterContentChecked,AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, ViewChild, AfterViewInit, QueryList, ElementRef, AfterViewChecked, AfterContentChecked,AfterContentInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MatList, MatListItem,MAT_DIALOG_DATA } from '@angular/material';
 import $ from 'jquery';
 
@@ -44,7 +44,8 @@ export class ChatComponent implements OnInit {
 {channelid: '',userName: "mike",online:false},
 
 {channelid: '',userName: "ken",online:false}];
-emoji=null;
+@Input() emoji=null;
+@Input() emoji_status=false;
 @ViewChild('inputMessage') private input;
 //@ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
@@ -91,10 +92,21 @@ emoji=null;
     }
   }
 
+  openEmoji(emoji_status) {
+    if(emoji_status ==true){
+      this.emoji_status=false;
+    }else{
+      this.emoji_status=true;
+    }
+  }
+
   closeDrawboard(event){
     this.drawboard=false;
   }
 
+  closeEmoji(event) {
+    this.emoji_status=false;
+  }
 
   addEmojiText(emoji){
     this.input.nativeElement.focus();
