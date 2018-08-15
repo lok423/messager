@@ -8,6 +8,7 @@ import { Message, DrawImg } from './shared/model/message';
 //import { User } from './shared/model/user';
 import { SocketService } from './shared/services/socket.service';
 
+import { DrawboardComponent } from '../drawboard/drawboard.component';
 import { PreviewImgComponent } from '../preview-img/preview-img.component';
 
 const AVATAR_URL = 'https://api.adorable.io/avatars/285';
@@ -84,12 +85,17 @@ export class ChatComponent implements OnInit {
   }
 
 
+
   draw(drawboard) {
     if(drawboard ==true){
       this.drawboard=false;
     }else{
       this.drawboard=true;
     }
+    const dialogRef = this.dialog.open(DrawboardComponent, {
+      width: (document.body.clientWidth) + 'px',
+    });
+    console.log('-----' + document.body.clientWidth );
   }
 
   openEmoji(emoji_status) {
