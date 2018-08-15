@@ -43,7 +43,8 @@ export interface UploadFile {
     //createAt: any,
     selfsockets: any,
     receiverName: string,
-    file:string
+    file:string,
+    filename:string
   /*
     from?: User;
     content?: any;

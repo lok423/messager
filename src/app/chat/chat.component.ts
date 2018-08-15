@@ -13,7 +13,8 @@ import { PreviewImgComponent } from '../preview-img/preview-img.component';
 import { HttpResponse } from '@angular/common/http';
 
 const AVATAR_URL = 'https://api.adorable.io/avatars/285';
-const upload_URL ='http://localhost:8080/api/upload-file';
+//const upload_URL ='http://localhost:8080/api/upload-file';
+const upload_URL ='http://192.168.1.76:8080/api/upload-file';
 
 @Component({
   selector: 'app-chat',
@@ -299,7 +300,7 @@ public sendDrawImg(img: string): void {
   });
 }
 
-public sendFile(path: string): void {
+public sendFile(path: string, name: string): void {
   if (!path) {
     return;
   }
@@ -307,6 +308,7 @@ public sendFile(path: string): void {
         fromid: this.socketId,
           toid : this.selectedUser.channelid,
         //msg : message,
+        filename: name,
         file :path,
         senderName : this.username,
         receiverName : this.selectedUser.userName,
@@ -404,7 +406,8 @@ uploadFile($event: any){
           this.showMessage = true;
           if(event.body.file_path){
             var file_path = event.body.file_path;
-            this.sendFile(file_path);
+            var file_name = event.body.file_name;
+            this.sendFile(file_path,file_name);
             //console.log(file_path);
           }
           this.showProgressBar=false;
