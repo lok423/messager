@@ -27,7 +27,7 @@
     Chat
   </button>
   <div #scrollMe ngbDropdownMenu aria-labelledby="dropdownConfig" class="chat-drop-menu">
-    
+
 
     <div class="container container-head">
       <div class="btn-outline-primary pull-left head-button">Chat</div>
@@ -43,14 +43,16 @@
         </button>
       </div>
     </div>
-
-    <div class="message2"> 
-      Demos 代码演示、代码片段 
-      
-    </div>
-
     <app-chat></app-chat>
-    
+
+<!--
+    <div class="message2">
+      Demos 代码演示、代码片段
+
+    </div>-->
+
+
+
     <hr>
     <ng-template #popContent>
         <emoji-mart set="emojione" title="Learnspace™"  (emojiClick)="addEmojiText($event)"></emoji-mart>
@@ -72,8 +74,8 @@
         <div class="col-6 col-sm-6">
           Chat
         </div>
-        
-        
+
+
         <button mat-menu-item>
           <mat-icon class="material-icons md-dark col-3 col-sm-3" >videocam</mat-icon>
         </button>
@@ -95,6 +97,6 @@
       <mat-icon>call</mat-icon>
     </button>
   </div>
-  
+
   <app-chat></app-chat>
 </mat-menu> -->

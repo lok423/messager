@@ -53,11 +53,9 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
-<<<<<<< HEAD
 import { UploaderComponent } from './uploader/uploader.component';
-=======
+
 import { DashboardComponent } from './dashboard/dashboard.component';
->>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
 
 @NgModule({
   declarations: [
@@ -65,11 +63,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ChatComponent,
   DrawboardComponent,
     PreviewImgComponent,
-<<<<<<< HEAD
-    UploaderComponent
-=======
+    UploaderComponent,
+
     DashboardComponent
->>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
   ],
   imports: [
 
@@ -113,11 +109,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     PickerModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-<<<<<<< HEAD
-    HttpClientModule
-=======
+    HttpClientModule,
     NgbModule
->>>>>>> d457f6e4d35b000b0a6a5d7cfa04d57aa0157027
   ],
   providers: [SocketService],
   bootstrap: [AppComponent],

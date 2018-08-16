@@ -15,7 +15,7 @@ import { HttpResponse } from '@angular/common/http';
 
 const AVATAR_URL = 'https://api.adorable.io/avatars/285';
 //const upload_URL ='http://localhost:8080/api/upload-file';
-const upload_URL ='http://192.168.1.76:8080/api/upload-file';
+const upload_URL ='https://intense-headland-70474.herokuapp.com/api/upload-file';
 
 @Component({
   selector: 'app-chat',
@@ -44,7 +44,7 @@ export class ChatComponent implements OnInit {
 
 {channelid: '',userName: "peter",online:false},
 
-{channelid: '',userName: "bill",online:false},
+{channelid: '',userName: "edi",online:false},
 
 {channelid: '',userName: "mike",online:false},
 
@@ -59,6 +59,7 @@ uploadedPercentage = 0;
 showMessage = false;
 upload_message: String = '';
 showProgressBar = false;
+
 
 
 //@ViewChild('scrollMe') private myScrollContainer: ElementRef;
@@ -106,6 +107,7 @@ showProgressBar = false;
     }
     const dialogRef = this.dialog.open(DrawboardComponent, {
       width: (document.body.clientWidth) + 'px',
+      data: {img: this.drawImg}
     });
     console.log('-----' + document.body.clientWidth );
   }
@@ -179,15 +181,14 @@ showProgressBar = false;
       this.loadOnlineUser(this.allUsersList,this.userList);
 
       //console.log(userList);
-      console.log("userList",this.userList);
-      console.log("socketId",this.socketId);
+      //console.log("userList",this.userList);
+      //console.log("socketId",this.socketId);
   });
 
   this.ioConnection = this.socketService.onMessage()
     .subscribe((message: Message) => {
       this.messages.push(message);
-      console.log(message);
-      //this.scrollToBottom();
+      //console.log(message);
 
     });
 
@@ -203,19 +204,14 @@ showProgressBar = false;
     .subscribe((img: DrawImg) => {
       this.messages.push(img);
       console.log("receive draw:");
-      //this.scrollToBottom();
     });
 
     this.ioConnection = this.socketService.onFile()
       .subscribe((file: UploadFile) => {
         this.messages.push(file);
         console.log("receive file:",file);
-        //this.scrollToBottom();
 
       });
-
-
-
 
     this.socketService.onEvent(Event.CONNECT)
       .subscribe(() => {
@@ -232,9 +228,6 @@ showProgressBar = false;
         //this.scrollToBottom();
 
       });
-
-
-
 
     this.socketService.onEvent(Event.DISCONNECT)
       .subscribe(() => {
@@ -281,20 +274,6 @@ showProgressBar = false;
     }
     console.log("selecteduser", this.selectedUser);
   }
-
-  arraysEqual(a, b) {
-  if (a === b) return true;
-  if (a == null || b == null) return false;
-  if (a.length != b.length) return false;
-
-  // If you don't care about the order of the elements inside
-  // the array, you should sort both arrays here.
-
-  for (var i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
-}
 
 handleDrawOutput(output){
   this.drawImg=output;
@@ -343,65 +322,10 @@ previewImg(img){
   });
 }
 
-/*
-uploadFile($event: any){
-  var fileUpload = this.input_file.nativeElement;
-  var files = fileUpload.files[0];
-  console.log("file",files);
-
-  if (files.length > 0){
-    // create a FormData object which will be sent as the data payload in the
-    // AJAX request
-    var formData = new FormData();
-
-    // loop through all the selected files and add them to the formData object
-    for (var i = 0; i < files.length; i++) {
-      var file = files[i];
-
-      // add the files to formData object for the data payload
-      formData.append('uploads[]', file, file.name);
-    }
-
-    $.ajax({
-      url: '/upload',
-      type: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function(data){
-          console.log('upload successful!\n' + data);
-      },
-      xhr: function() {
-        // create an XMLHttpRequest
-        var xhr = new XMLHttpRequest();
-
-        // listen to the 'progress' event
-        xhr.upload.addEventListener('progress', function(evt) {
-
-          if (evt.lengthComputable) {
-            // calculate the percentage of upload completed
-            var percentComplete = evt.loaded / evt.total;
-            percentComplete = percentComplete * 100;
-
-            // update the Bootstrap progress bar with the new percentage
-            $('.progress-bar').text(percentComplete + '%');
-            $('.progress-bar').width(percentComplete + '%');
-
-            // once the upload reaches 100%, set the progress bar text to done
-            if (percentComplete === 100) {
-              $('.progress-bar').html('Done');
-            }
-          }
-        }, false);
-        return xhr;
-      }
-    });
-    }
-  }
-  */
 
   onFileSelected(event) {
     this.selectedFile = <File>event.target.files[0];
+    console.log(this.selectedFile);
   }
 
   onUpload() {
@@ -446,5 +370,9 @@ uploadFile($event: any){
       this.showMessage = true;
       //this.slimLoadingBarService.reset();
     });
+  }
+
+  clickUploader(){
+    this.input_file.nativeElement.click();
   }
 }

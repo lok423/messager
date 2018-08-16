@@ -12,6 +12,9 @@ import $ from 'jquery';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { pairwise } from 'rxjs/internal/operators/pairwise';
+import { Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ChatComponent } from '../chat/chat.component';
 
 @Component({
   selector: 'app-drawboard',
@@ -40,7 +43,8 @@ export class DrawboardComponent implements AfterViewInit {
     'green',
   ];
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<ChatComponent>,
+    @Inject(MAT_DIALOG_DATA) public data) { }
 
   // constructor(width: number, height: number) {
   //   this.width = width;
@@ -220,7 +224,8 @@ preventDefault(e) {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
     this.imgageSrc = canvasEl.toDataURL();
     // console.log('dataurl', this.imgageSrc);
-    this.drawOutput.emit(this.imgageSrc);
+    //this.drawOutput.emit(this.imgageSrc);
+    this.data.img = this.imgageSrc;
     this.cx.clearRect(0, 0, this.width, this.height);
     document.getElementById('drawboard').style.display = 'none';
   }
