@@ -14,8 +14,8 @@ import { PreviewImgComponent } from '../preview-img/preview-img.component';
 import { HttpResponse } from '@angular/common/http';
 
 const AVATAR_URL = 'https://api.adorable.io/avatars/285';
-const upload_URL ='http://localhost:8080/api/upload-file';
-//const upload_URL ='http://192.168.1.76:8080/api/upload-file';
+//const upload_URL ='http://localhost:8080/api/upload-file';
+const upload_URL ='https://intense-headland-70474.herokuapp.com/api/upload-file';
 
 @Component({
   selector: 'app-chat',
@@ -24,8 +24,8 @@ const upload_URL ='http://localhost:8080/api/upload-file';
 })
 export class ChatComponent implements OnInit {
 
-  imageData;
-  drawboard = false;
+
+  drawboard=false;
   ioConnection: any;
   messageContent: string;
   socketId = null;
