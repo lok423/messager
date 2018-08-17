@@ -4,6 +4,7 @@ import {
 import { Observable,fromEvent } from 'rxjs';
 import { map, filter, debounceTime, tap, switchAll } from 'rxjs/operators';
 import $ from 'jquery';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 //import 'rxjs/add/observable/fromEvent';
 //import 'rxjs/add/operator/takeUntil';
@@ -13,7 +14,6 @@ import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { pairwise } from 'rxjs/internal/operators/pairwise';
 import { Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ChatComponent } from '../chat/chat.component';
 
 @Component({
@@ -26,9 +26,10 @@ export class DrawboardComponent implements AfterViewInit {
   @Output() drawOutput: EventEmitter<any> = new EventEmitter<any>();
 
     @ViewChild('canvas') public canvas: ElementRef;
+    //@ViewChild('closedialog') closedialog: ElementRef;
 
-  @Input() public width = 800;
-  @Input() public height = 400;
+  @Input() public width;
+  @Input() public height;
   font = ['small', 'medium', 'large'];
   imgageSrc;
   colorCode = '#000';
@@ -43,31 +44,73 @@ export class DrawboardComponent implements AfterViewInit {
     'green',
   ];
 
-  constructor(public dialogRef: MatDialogRef<ChatComponent>,
-    @Inject(MAT_DIALOG_DATA) public data) { }
+  system = {
+    win: false,
+    mac: false,
+    x11: false,
+    // mobile
+    iphone: false,
+    ipad: false,
+    ios: false,
+    android: false,
+    winMobile: false
+  };
+
+  constructor(public thisDialogRef: MatDialogRef<DrawboardComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: string) { }
 
   // constructor(width: number, height: number) {
   //   this.width = width;
   //   this.height = height;
   // }
 
+
   public ngAfterViewInit() {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
     this.cx = canvasEl.getContext('2d');
 
-      canvasEl.width = this.width;
-      canvasEl.height = this.height;
+    const ua = navigator.userAgent;
+    const p = navigator.platform;
+    this.system.win = p.indexOf('Win') === 0;
+    this.system.mac = p.indexOf('Mac') === 0;
+    this.system.x11 = (p === 'x11') || (p.indexOf('Linux') === 0);
 
-      this.cx.lineWidth = 3;
-      this.cx.lineCap = 'round';
-      this.cx.strokeStyle = this.colorCode;
+    this.system.iphone = ua.indexOf('iPhone') > -1;
+    this.system.ipad = ua.indexOf('iPad') > -1;
+    this.system.android = ua.indexOf('Android') > -1;
+
+    const viewHeight = window.innerHeight || document.documentElement.clientHeight;
+    const viewWidth = window.innerWidth || document.documentElement.clientWidth;
+    console.log(viewHeight, viewWidth);
+    if (this.system.iphone) {
+      // alert(viewWidth,vi ewHeight);
+      document.body.style.width = viewWidth + '';
+      canvasEl.width = viewWidth;
+      canvasEl.height = viewHeight;
+    } else if (this.system.win) {
+      canvasEl.width = 600;
+      canvasEl.height = 900;
+    } else {
+      canvasEl.width = viewWidth;
+      canvasEl.height = viewHeight;
+    }
+
+    canvasEl.width = canvasEl.width * 0.75;
+    canvasEl.height = canvasEl.height * 0.75;
+
+
+    console.log(viewWidth);
+
+    this.cx.lineWidth = 3;
+    this.cx.lineCap = 'round';
+    this.cx.strokeStyle = this.colorCode;
 
       this.captureEvents(canvasEl);
       this.touchcaptureEvents(canvasEl);
 
-      // Prevent scrolling when touching the canvas
-      document.body.addEventListener("touchstart", function (e) {
-        if (e.target == canvasEl) {
+    // Prevent scrolling when touching the canvas
+    document.body.addEventListener('touchstart', function (e) {
+      if (e.target === canvasEl) {
 
           //if (e.cancelable) {
             //console.log("touch");
@@ -75,14 +118,14 @@ export class DrawboardComponent implements AfterViewInit {
         //if (!e.defaultPrevented) {
             //e.preventDefault();
             $('body').addClass('stop-scrolling');
-            console.log("add class")
+            //console.log("add class")
             //$('body').bind('touchmove', function(e){e.preventDefault()})
         //}
     //}
         }
       }, false);
       document.body.addEventListener("touchend", function (e) {
-        if (e.target != canvasEl) {
+        if (e.target !== canvasEl) {
           //if (e.cancelable) {
         // 判断默认行为是否已经被禁用
       //  if (!e.defaultPrevented) {
@@ -93,20 +136,20 @@ export class DrawboardComponent implements AfterViewInit {
     //$('body').removeClass('stop-scrolling');
     $(document).ready(function(){
       $('body').removeClass('stop-scrolling');
-      console.log("remove class");
+      //console.log("remove class");
       //$('body').bind('touchmove', function(e){e.preventDefault()});
     });
 
         }
       }, false);
       document.body.addEventListener("touchmove", function (e) {
-        if (e.target == canvasEl) {
+        if (e.target === canvasEl) {
           //console.log("touchmove",e);
 
 
 $(document).ready(function(){
   $('body').addClass('stop-scrolling');
-  console.log("add class");
+  //console.log("add class");
   //$('body').bind('touchmove', function(e){e.preventDefault()});
 });
           //if (e.cancelable) {
@@ -121,7 +164,7 @@ $(document).ready(function(){
   }else{
     $(document).ready(function(){
       $('body').removeClass('stop-scrolling');
-      console.log("remove class");
+      //console.log("remove class");
       //$('body').bind('touchmove', function(e){e.preventDefault()});
     });
   }
@@ -161,7 +204,7 @@ preventDefault(e) {
         }))
 
         .subscribe((res: [MouseEvent, MouseEvent]) => {
-          console.log("res",res[0],res[1]);
+          //console.log("res",res[0],res[1]);
           const rect = canvasEl.getBoundingClientRect();
           // console.log(' res[0]', res[0]);
 
@@ -223,15 +266,15 @@ preventDefault(e) {
   onDrawImage(event) {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
     this.imgageSrc = canvasEl.toDataURL();
-    // console.log('dataurl', this.imgageSrc);
-    //this.drawOutput.emit(this.imgageSrc);
-    this.data.img = this.imgageSrc;
+    console.log('dataurl', this.imgageSrc);
+    this.drawOutput.emit(this.imgageSrc);
+    this.data = this.imgageSrc;
     this.cx.clearRect(0, 0, this.width, this.height);
-    document.getElementById('drawboard').style.display = 'none';
+    this.closeDrawWin();
   }
 
-  closeDrowWin() {
-    this.drawboard.emit(false);
+  closeDrawWin() {
+    this.thisDialogRef.close();
   }
   onSelectFont(item) {
     if (item === 'small') {

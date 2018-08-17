@@ -6,8 +6,8 @@ import { Event } from '../model/event';
 
 import * as socketIo from 'socket.io-client';
 
-//const SERVER_URL = 'http://localhost:8080';
-const SERVER_URL = 'https://intense-headland-70474.herokuapp.com';
+const SERVER_URL = 'http://localhost:8080';
+//const SERVER_URL = 'http://192.168.1.76:8080';
 
 @Injectable()
 export class SocketService {
