@@ -24,7 +24,7 @@ const upload_URL ='https://intense-headland-70474.herokuapp.com/api/upload-file'
 })
 export class ChatComponent implements OnInit {
 
-
+imageData;
   drawboard=false;
   ioConnection: any;
   messageContent: string;
