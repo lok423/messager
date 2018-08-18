@@ -1,18 +1,18 @@
 <div *ngIf="!selectedUser;then contact; else messager">
 </div>
 
-<ng-template #contact >
-  <div class="container">
+<ng-template #contact>
+  <div class="container" (click)="$event.stopPropagation();">
     <div class="row">
-      <div class="col-lg-12 col-sm-12">
+      <div class="col-lg-12 col-sm-12 chat-total">
         
-          <mat-list>
-            <div *ngFor="let user of allUsersList">
+          <mat-list style="width:100%">
+            <div *ngFor="let user of allUsersList" >
               <!--
                   <mat-list-item class="contact" *ngIf="!user.channelid.includes(socketId)" (click)="selectUser(user)" >
                   -->
-              <mat-list-item class="contact" *ngIf="!user.channelid.includes(socketId)" (click)="selectUser(user)">
-                <img mat-list-avatar src="https://api.adorable.io/avatars/285/{{user.userName}}.png" alt="Desc 1">
+              <mat-list-item class="contact" *ngIf="!user.channelid.includes(socketId)" (click)="selectUser(user); $event.stopPropagation()">
+                <img mat-list-avatar style="width:30px; height: 30px;" src="https://api.adorable.io/avatars/285/{{user.userName}}.png" alt="Desc 1">
                 <h3 mat-line>{{user.userName}}</h3>
 
                 <div *ngIf="user.online==true">
@@ -22,51 +22,59 @@
             </div>
 
           </mat-list>
+      </div>
+      
+      <div style="width: 250px;">
+        <hr>
         
-
-        <!--{{userList|json}}-->
+        <mat-icon color="" style="vertical-align: middle; transform: translateY(-.1em); padding-left: 16px;padding-right: 24px">search</mat-icon>
+        <input style="border:0; outline: none; " placeholder="Search" [(ngModel)]="messageContent"> 
       </div>
     </div>
   </div>
 </ng-template>
 
 <ng-template #messager>
-  <div class="container messager-container">
+  <div class="container messager-container" (click)="$event.stopPropagation();">
     <div class="row">
-      <div class="col-lg-12 col-sm-12">
+      <div class="col-lg-12 col-sm-12 chat-total">
        
-          <mat-list style="width:100%">
-            <mat-list-item>
-              <img mat-list-avatar src="https://api.adorable.io/avatars/285/{{selectedUser.userName}}.png" alt="Desc 1">
-              <h3 mat-line>{{selectedUser.userName}}</h3>
+          <mat-list style="height: 35px; padding-top: 0; width:100%; background-color: rgb(199, 185, 185)">
+            <mat-list-item style="padding: 0; height: 35px;">
+              <!-- <img mat-list-avatar src="https://api.adorable.io/avatars/285/{{selectedUser.userName}}.png" alt="Desc 1"> -->
               <!-- <a href="#" (click)="selectedUser=null">back</a> -->
-              <button class="btn btn-outline-primary" id="backbutton" (click)="selectedUser=null">back</button>
+              <button mat-line class="btn btn-outline-primary" id="backbutton" (click)="selectedUser=null; $event.stopPropagation()" >
+                <mat-icon style="font-size: 12px; height: 12px; width: 12px;" >undo</mat-icon>
+              </button>
+              <h3 style="margin-left: -140px; font-size: 16px">{{selectedUser.userName}}</h3>
             </mat-list-item>
           </mat-list>
             <div class="message-container">
-              <!--<ul class="list-group">-->
               <ol class="chat" #scrollMe [scrollTop]="scrollMe.scrollHeight" *ngIf="messages.length > 0">
                   <li [ngClass]="{'self': (message.senderName==username && selectedUser.userName==message.receiverName) , 'other': selectedUser.userName== message.senderName  }" *ngFor="let message of messages">
 <div *ngIf="(message.senderName==username && selectedUser.userName==message.receiverName)|| selectedUser.userName== message.senderName">
   <div  *ngIf=" message.msg ">
-      <img mat-list-avatar style="width:30px; height: 30px; border-radius: 5px;" src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">
-      <mat-list-item>
-        <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">-->
-        
+    <mat-list-item>
+      <img class="avardar" src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">
+      <div class="msg-frame">
+        <h3 class="user">{{message.senderName}}</h3>
         <div class="msg">
-          <h3 mat-line class="user">{{message.senderName}}</h3>
-          <p mat-line>{{ message.msg }}</p>
+          <p>{{ message.msg }}</p>
         </div>
-        
-      </mat-list-item>
+      </div>
+      
+    </mat-list-item>
+      
   </div>
-  <div class="msg" *ngIf="message.drawImg">
+  <div *ngIf="message.drawImg">
       <mat-list-item>
         <!--<img mat-list-avatar src="https://api.adorable.io/avatars/285/{{selectedUser.userName}}.png" alt="Desc 1">-->
-        <img mat-list-avatar class="btn-outline-primary pull-left" style="width:15px; height: 15px;" src="https://api.adorable.io/avatars/285/{{selectedUser.userName}}.png" alt="Desc 1">
-        <div >
-          <h3 mat-line>{{message.senderName}}</h3>
-          <img style="width:259px;" src="{{message.drawImg}}" width="100 " (click)="previewImg(message.drawImg)">
+        <img class="avardar" src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="Desc 1">
+        <div class="msg-frame">
+          <h3 class="user">{{message.senderName}}</h3>
+          <div class="msg">
+            <img src="{{message.drawImg}}" width="100 " (click)="previewImg(message.drawImg)">
+          </div>
         </div>
         
       </mat-list-item>
@@ -79,67 +87,49 @@
 
 
             </div>
-           
-            <!-- The function panel, such as emoji, upload buttons -->
-            <div>
-              <hr>
-              <button style=" border: 0;  outline: none;" ngbPopover="Send a photo" triggers="mouseenter:mouseleave" placement="right">
-                <mat-icon>add_photo_alternate</mat-icon>
-              </button>
-              
-              <button (click)="openEmoji(emoji_status)" style=" border: 0;  outline: none;" ngbPopover="Send emoji" triggers="mouseenter:mouseleave">
-                <mat-icon>mood</mat-icon>
-              </button>
-
-              <ng-template #popContent>
-                <emoji-mart set="emojione" title="Learnspace™"  (emojiClick)="addEmojiText($event)"></emoji-mart>
-              </ng-template>
-              <button type="button" (click)="$event.stopPropagation();" style=" border: 0;  outline: none;"  [ngbPopover]="popContent" >
-                <mat-icon>mood</mat-icon>
-              </button>
-             
-              <button style=" border: 0;  outline: none;" ngbPopover="Upload a file" triggers="mouseenter:mouseleave">
-                <mat-icon>attach_file</mat-icon>
-              </button>
-              
-              <button (click)="draw(drawboard)" style=" border: 0;  outline: none;" ngbPopover="Create a calendar" triggers="mouseenter:mouseleave" >
-                <mat-icon>border_color</mat-icon>
-              </button>
-            
-              <button style="border: 0; outline: none;" ngbPopover="Create a calendar" triggers="mouseenter:mouseleave">
-                <mat-icon color="accent" >calendar_today</mat-icon>
-              </button>
-              
-
-            </div>
-            <div class="">
+            <div style="padding:8px">
               <mat-icon>message</mat-icon>
               <mat-form-field class="chat-input">
                 <input matInput #inputMessage maxlength="140" placeholder="Type your message" [(ngModel)]="messageContent" ngValue="emoji" (keyup.enter)="sendMessage(messageContent)">
                 <mat-hint align="end">{{inputMessage.value.length}}/140</mat-hint>
               </mat-form-field>
             </div>
-            <!--<button type="button" name="button" (click)="drawboardEnable(drawboard)">drawboard</button>-->
 
-          
+            
       </div>
-      <div #drawZone class="col-lg-8 col-sm-12">
-      <!-- <div #drawZone class="col-lg-8 col-sm-12">
-        {{drawZone.innerWidth}}
 
-        <div *ngIf="drawboard==true">
-          <br>
-          <app-drawboard id="drawboard" (drawOutput)='handleDrawOutput($event)' [width]="400" [height]="400" (drawboard)="closeDrawboard($event)" ></app-drawboard>
-        </div>
-
-
-      </div>-->
-      </div> 
 
     </div>
   </div>
-  <div *ngIf="emoji_status==true">
-    <emoji-mart set="emojione" title="Learnspace™"  (emojiClick)="addEmojiText($event)"></emoji-mart>
+
+  <!-- The function panel, such as emoji, upload buttons -->
+  <div class="panel-function">
+              
+    <button style=" border: 0;  outline: none;" >
+      <mat-icon ngbTooltip="Send a photo" triggers="hover" >add_photo_alternate</mat-icon>
+    </button>
+    
+    <ng-template #popContent>
+      <emoji-mart set="emojione" title="Learnspace™"  perLine="6" totalFrequentLines="2" [style]="{ border: '0'}" (emojiClick)="addEmojiText($event)" (click)="$event.stopPropagation();"></emoji-mart>
+    </ng-template>
+    <button type="button" (click)="$event.stopPropagation();" style=" border: 0;  outline: none;"  [ngbPopover]="popContent" >
+      <mat-icon ngbTooltip="Emoji" triggers="hover" >mood</mat-icon>
+    </button>
+    
+    <button style=" border: 0;  outline: none;" ngbTooltip="Upload a file" triggers="hover">
+      <mat-icon>attach_file</mat-icon>
+    </button>
+    
+    <button (click)="draw(drawboard)" style=" border: 0;  outline: none;">
+      <mat-icon  ngbTooltip="Paint" triggers="hover" >border_color</mat-icon>
+    </button>
+  
+    <button style="border: 0; outline: none;">
+      <mat-icon color="accent"  ngbTooltip="Create a calendar" triggers="hover">calendar_today</mat-icon>
+    </button>
+    
+
   </div>
+  
  
 </ng-template>

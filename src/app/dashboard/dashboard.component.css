@@ -28,15 +28,22 @@
     /* text-align:right; */
 }
 .chat-drop-menu {
-    min-width: 300px;
-    max-height: 500px; /*Provide height in pixels or in other units as per your layout*/
-    overflow-y: auto; /*Provide an auto overflow to diaply scroll*/
+    /* min-width: 300px; */
+    /* max-height: 500px;  */
+    /* overflow-y: auto;  */
+    padding-bottom: 0;
 }
 
 .head-button {
     font-size: 15px;
     color: rgba(255, 255, 255, 1);
     border: 0;
+}
+
+.chat-button {
+    font-size: 15px;
+    height: 30px;
+    width: 90px;
 }
 
 .message1,.message2 { 
@@ -57,14 +64,14 @@
 .message1::after { 
     content: ''; 
     position: absolute; 
-    top: 0; right: -24px; 
+    top: 10px; right: -5px; 
     width: 20px; 
     height: 20px; 
     border-width: 0 0 20px 20px; 
     border-style: solid; 
     border-bottom-color: inherit; /*自动继承父元素的border-bottom-color*/ 
     border-left-color: transparent; 
-    border-radius: 0 0 60px 0; 
+    transform: rotate(-45deg); 
 } 
 /** 通过对小正方形旋转45度解决 **/ 
 .message2::before { 

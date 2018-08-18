@@ -44,7 +44,12 @@ export class ChatComponent implements OnInit {
 
 {channelid: '',userName: "mike",online:false},
 
-{channelid: '',userName: "ken",online:false}];
+{channelid: '',userName: "ken",online:false},
+{channelid: '',userName: "ken2",online:false},
+{channelid: '',userName: "ken3",online:false},
+{channelid: '',userName: "ken4",online:false},
+{channelid: '',userName: "ken5",online:false}
+];
 @Input() emoji=null;
 @Input() emoji_status=false;
 @ViewChild('inputMessage') private input;
