@@ -1,17 +1,21 @@
 import { Component, OnInit, Input, ViewChildren, ViewChild, AfterViewInit, QueryList, ElementRef, AfterViewChecked, AfterContentChecked,AfterContentInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MatList, MatListItem,MAT_DIALOG_DATA } from '@angular/material';
 import $ from 'jquery';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 
 //import { Action } from './shared/model/action';
 import { Event } from './shared/model/event';
-import { Message, DrawImg } from './shared/model/message';
+import { Message, DrawImg, UploadFile } from './shared/model/message';
 //import { User } from './shared/model/user';
 import { SocketService } from './shared/services/socket.service';
 
 import { DrawboardComponent } from '../drawboard/drawboard.component';
 import { PreviewImgComponent } from '../preview-img/preview-img.component';
+import { HttpResponse } from '@angular/common/http';
 
 const AVATAR_URL = 'https://api.adorable.io/avatars/285';
+//const upload_URL ='http://localhost:8080/api/upload-file';
+const upload_URL ='https://intense-headland-70474.herokuapp.com/api/upload-file';
 
 @Component({
   selector: 'app-chat',
@@ -20,7 +24,7 @@ const AVATAR_URL = 'https://api.adorable.io/avatars/285';
 })
 export class ChatComponent implements OnInit {
 
-
+imageData;
   drawboard=false;
   ioConnection: any;
   messageContent: string;
@@ -40,7 +44,7 @@ export class ChatComponent implements OnInit {
 
 {channelid: '',userName: "peter",online:false},
 
-{channelid: '',userName: "bill",online:false},
+{channelid: '',userName: "edi",online:false},
 
 {channelid: '',userName: "mike",online:false},
 
@@ -53,6 +57,16 @@ export class ChatComponent implements OnInit {
 @Input() emoji=null;
 @Input() emoji_status=false;
 @ViewChild('inputMessage') private input;
+@ViewChild('upload_input') input_file: ElementRef;
+
+selectedFile: File = null;
+uploadedPercentage = 0;
+showMessage = false;
+upload_message: String = '';
+showProgressBar = false;
+
+
+
 //@ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
 
@@ -64,7 +78,7 @@ export class ChatComponent implements OnInit {
 
   constructor(private socketService: SocketService,
 
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,private http: HttpClient) { }
 
   ngOnInit(): void {
     this.username= window.prompt('Enter Your Name');
@@ -78,29 +92,35 @@ export class ChatComponent implements OnInit {
     }, 0);
 
     $(document).ready(function(){
-
+      var box = document.querySelector('drawZone');
+      var width = $( window ).width();
+      //var width = $('drawZone').width();
+      console.log("width",width);
       //$('body').bind('touchmove', function(e){e.preventDefault()});
     });
-    var box = document.querySelector('drawZone');
-    var width = $( window ).width();
 
-    //var width = $('drawZone').width();
-    console.log("width",width);
 
   }
 
+  draw() {
+    // draw(drawboard) {
+    // if(drawboard ==true){
+    //   this.drawboard=false;
+    // }else{
+    //   this.drawboard=true;
+    // }
 
-
-  draw(drawboard) {
-    if(drawboard ==true){
-      this.drawboard=false;
-    }else{
-      this.drawboard=true;
-    }
     const dialogRef = this.dialog.open(DrawboardComponent, {
       width: (document.body.clientWidth) + 'px',
+      data: {data : this.imageData}
     });
     console.log('-----' + document.body.clientWidth );
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // this.imageData = result;
+      // this.sendDrawImg(this.imageData);
+      this.sendDrawImg(dialogRef.componentInstance.imgageSrc);
+    });
   }
 
   openEmoji(emoji_status) {
@@ -172,15 +192,14 @@ export class ChatComponent implements OnInit {
       this.loadOnlineUser(this.allUsersList,this.userList);
 
       //console.log(userList);
-      console.log("userList",this.userList);
-      console.log("socketId",this.socketId);
+      //console.log("userList",this.userList);
+      //console.log("socketId",this.socketId);
   });
 
   this.ioConnection = this.socketService.onMessage()
     .subscribe((message: Message) => {
       this.messages.push(message);
-      console.log(message);
-      //this.scrollToBottom();
+      //console.log(message);
 
     });
 
@@ -195,13 +214,15 @@ export class ChatComponent implements OnInit {
   this.ioConnection = this.socketService.onDrawImg()
     .subscribe((img: DrawImg) => {
       this.messages.push(img);
-      console.log("receive draw:",img);
-      //this.scrollToBottom();
-
+      console.log("receive draw:");
     });
 
+    this.ioConnection = this.socketService.onFile()
+      .subscribe((file: UploadFile) => {
+        this.messages.push(file);
+        console.log("receive file:",file);
 
-
+      });
 
     this.socketService.onEvent(Event.CONNECT)
       .subscribe(() => {
@@ -218,9 +239,6 @@ export class ChatComponent implements OnInit {
         //this.scrollToBottom();
 
       });
-
-
-
 
     this.socketService.onEvent(Event.DISCONNECT)
       .subscribe(() => {
@@ -268,20 +286,6 @@ export class ChatComponent implements OnInit {
     console.log("selecteduser", this.selectedUser);
   }
 
-  arraysEqual(a, b) {
-  if (a === b) return true;
-  if (a == null || b == null) return false;
-  if (a.length != b.length) return false;
-
-  // If you don't care about the order of the elements inside
-  // the array, you should sort both arrays here.
-
-  for (var i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
-}
-
 handleDrawOutput(output){
   this.drawImg=output;
   console.log("output",this.drawImg);
@@ -292,7 +296,6 @@ public sendDrawImg(img: string): void {
   if (!img) {
     return;
   }
-
   this.socketService.sendDrawImg({
         fromid: this.socketId,
           toid : this.selectedUser.channelid,
@@ -303,7 +306,23 @@ public sendDrawImg(img: string): void {
         //createAt: Date.now(),
         selfsockets: this.selfsockets
   });
+}
 
+public sendFile(path: string, name: string): void {
+  if (!path) {
+    return;
+  }
+  this.socketService.sendFile({
+        fromid: this.socketId,
+          toid : this.selectedUser.channelid,
+        //msg : message,
+        filename: name,
+        file :path,
+        senderName : this.username,
+        receiverName : this.selectedUser.userName,
+        //createAt: Date.now(),
+        selfsockets: this.selfsockets
+  });
 }
 
 previewImg(img){
@@ -315,4 +334,56 @@ previewImg(img){
 }
 
 
+  onFileSelected(event) {
+    this.selectedFile = <File>event.target.files[0];
+    console.log(this.selectedFile);
+  }
+
+  onUpload() {
+    const fd = new FormData();
+    this.showMessage = false;
+    console.log(this.selectedFile.name);
+    fd.append('file', this.selectedFile, this.selectedFile.name);
+    this.http.post(upload_URL, fd, {
+      reportProgress: true, observe: 'events'
+    }).subscribe( (event: HttpEvent<any>) => {
+      switch (event.type) {
+        case HttpEventType.Sent:
+          //this.slimLoadingBarService.start();
+          this.showProgressBar=true;
+          break;
+        case HttpEventType.Response:
+        console.log("response", event.body );
+          //this.slimLoadingBarService.complete();
+          this.upload_message = "Uploaded Successfully";
+          this.showMessage = true;
+          if(event.body.file_path){
+            var file_path = event.body.file_path;
+            var file_name = event.body.file_name;
+            this.sendFile(file_path,file_name);
+            //console.log(file_path);
+          }
+          this.showProgressBar=false;
+          this.uploadedPercentage=0;
+          break;
+        case 1: {
+          if (Math.round(this.uploadedPercentage) !== Math.round(event['loaded'] / event['total'] * 100)){
+            this.uploadedPercentage = event['loaded'] / event['total'] * 100;
+            //this.slimLoadingBarService.progress = Math.round(this.uploadedPercentage);
+          }
+          break;
+        }
+      }
+    },
+    error => {
+      console.log(error);
+      this.upload_message = "Something went wrong";
+      this.showMessage = true;
+      //this.slimLoadingBarService.reset();
+    });
+  }
+
+  clickUploader(){
+    this.input_file.nativeElement.click();
+  }
 }

@@ -1,6 +1,6 @@
-<div #size>
-<div id="drawboard">
-  <ul [ngStyle]="{'width':width+'px'}">
+<div #size id="drawboardDiv">
+  <!-- <ul [ngStyle]="{'width':width+'px'}"> -->
+    <ul>
   <!--
       <li>
         <a (click)=onDrawImage($event)>
@@ -56,13 +56,14 @@
       </li>
 
       <li>
-        <a (click)=onDrawImage($event)>
+        <a (click)=onDrawImage($event) >
           <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
         </a>
+        <!--<button #closedialog [mat-dialog-close]="data.img" style="display:none;"></button>-->
       </li>
 
       <li class="toRight">
-        <a (click)=closeDrowWin()>
+        <a (click)=closeDrawWin()>
           <i class="fa fa-window-close" aria-hidden="true"></i>
         </a>
       </li>
