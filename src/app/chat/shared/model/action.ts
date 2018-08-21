@@ -4,3 +4,10 @@ export enum Action {
     RENAME,
     TIME
 }
+
+export interface UpdateMsgRead {
+	  currentUserName : string,
+    selectedUserName: string,
+    createdAt:Date
+
+}

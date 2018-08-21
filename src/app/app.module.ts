@@ -21,6 +21,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {
   MatAutocompleteModule,
+  MatBadgeModule,
 
   MatButtonModule,
   MatButtonToggleModule,
@@ -56,6 +57,18 @@ import {
 import { UploaderComponent } from './uploader/uploader.component';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { HomeComponent } from './home/home.component';
+
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
+
+import { AlertComponent } from './_directives/index';
+import { AuthGuard } from './_guards/index';
+import { JwtInterceptorProvider, ErrorInterceptorProvider } from './_helpers/index';
+import { AlertService, AuthenticationService, UserService } from './_services/index';
+
 
 @NgModule({
   declarations: [
@@ -65,13 +78,20 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     PreviewImgComponent,
     UploaderComponent,
 
-    DashboardComponent
+    DashboardComponent,
+
+    LoginComponent,
+
+    RegisterComponent,
+
+    HomeComponent,
+    AlertComponent
   ],
   imports: [
 
     BrowserModule,
     MatAutocompleteModule,
-
+MatBadgeModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -112,7 +132,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HttpClientModule,
     NgbModule
   ],
-  providers: [SocketService],
+  providers: [SocketService,
+    AuthGuard,
+    AlertService,
+    AuthenticationService,
+    UserService,
+    JwtInterceptorProvider,
+    ErrorInterceptorProvider
+  ],
   bootstrap: [AppComponent],
   entryComponents: [PreviewImgComponent, DrawboardComponent]//,
   //exports: [DrawboardComponent]

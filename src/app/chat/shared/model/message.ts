@@ -2,13 +2,14 @@
 //import {Action} from './action';
 
 export interface Message {
-  toid : string,
+  toid : string[],
   fromid: string,
 	  msg : string,
 	  senderName : string,
     //createAt: any,
-    selfsockets: any,
-    receiverName: string
+    selfsockets: string[],
+    receiverName: string,
+    createdAt:Date
 
   /*
     from?: User;
@@ -19,14 +20,15 @@ export interface Message {
 }
 
 export interface DrawImg {
-  toid : string,
+  toid : string[],
   fromid: string,
 	  //msg : string,
 	  senderName : string,
     //createAt: any,
-    selfsockets: any,
+    selfsockets: string[],
     receiverName: string,
-    drawImg:string
+    drawImg:string,
+    createdAt:Date
   /*
     from?: User;
     content?: any;
@@ -36,15 +38,35 @@ export interface DrawImg {
 }
 
 export interface UploadFile {
-  toid : string,
+  toid : string[],
   fromid: string,
 	  //msg : string,
 	  senderName : string,
     //createAt: any,
-    selfsockets: any,
+    selfsockets: string[],
     receiverName: string,
     file:string,
-    filename:string
+    filename:string,
+    createdAt:Date
+  /*
+    from?: User;
+    content?: any;
+    action?: Action;
+    createAt?: number;
+    */
+}
+
+export interface UploadImg {
+  toid : string[],
+  fromid: string,
+	  //msg : string,
+	  senderName : string,
+    //createAt: any,
+    selfsockets: string[],
+    receiverName: string,
+    img:string,
+    imgname:string,
+    createdAt:Date
   /*
     from?: User;
     content?: any;
