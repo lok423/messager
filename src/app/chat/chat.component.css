@@ -368,8 +368,8 @@ ul{
 }*/
  #sidepanel #profile .wrap #status-options {
   position: absolute;
-  opacity: 0;
-  visibility: hidden;
+
+
   width: 150px;
   margin: 70px 0 0 0;
   border-radius: 6px;
@@ -736,12 +736,18 @@ ul{
   }
 }*/
 
-
+/*
 @media screen and (min-width: 900px) {
   .content {
    width: calc(100% - 340px);
  }
+}*/
+.content{
+  min-width:280px;
+  max-width:340px;
+  width:100%;
 }
+
 .content .contact-profile {
  width: 100%;
  height: 60px;
@@ -771,11 +777,11 @@ ul{
  color: #435f7a;
 }
 .content .messages {
- /*height: auto;
- min-height: calc(100% - 93px);
+ height: 200px;
+ /*min-height: calc(100% - 93px);*/
  max-height: calc(100% - 93px);
  overflow-y: scroll;
- */
+
  overflow-x: hidden;
  height: 300px;
  width: 100%;
@@ -783,12 +789,12 @@ ul{
 }
 
 
-
+/*
 @media screen and (max-width: 735px) {
   .content .messages {
    max-height: calc(100% - 105px);
  }
-}
+}*/
 .content .messages::-webkit-scrollbar {
  width: 8px;
  background: transparent;
@@ -846,12 +852,12 @@ color:black;
   border-radius: 0;
 
 }
-
+/*
 @media screen and (min-width: 735px) {
   .content .messages ul li p {
    max-width: 300px;
  }
-}
+}*/
 .content .message-input {
 
  bottom: 0;
@@ -920,7 +926,11 @@ color:black;
 
 .spinner{
   top: 220px;
-left: 120px;
-right: 120px;
+left: 95px;
+right: 95px;
 position: absolute;
+}
+
+.select{
+  margin:0;
 }

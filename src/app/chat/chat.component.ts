@@ -70,6 +70,8 @@ searchUsers :User[]=[];
 searchText:string='';
 
 showSpinner :boolean =true;
+profile_status_list:boolean =false;
+profile_status:string='active';
 
 
 
@@ -87,12 +89,11 @@ showSpinner :boolean =true;
     public dialog: MatDialog,private http: HttpClient,private userService: UserService) {this.currentUser = JSON.parse(localStorage.getItem('currentUser')); console.log(this.currentUser);this.loadAllUsers(); }
 
   ngOnInit(): void {
-
-    console.log(localStorage.currentUser);
+    //console.log(localStorage.currentUser);
     //this.username= window.prompt('Enter Your Name');
     //console.log(this.messages);
 
-    console.log("drawZone", this.drawWidth,this.drawHeight);
+    //console.log("drawZone", this.drawWidth,this.drawHeight);
 
     // Using timeout due to https://github.com/angular/angular/issues/14748
     setTimeout(() => {
@@ -100,13 +101,14 @@ showSpinner :boolean =true;
       this.initIoConnection();
     }, 100);
 
+/*
     $(document).ready(function(){
       var box = document.querySelector('drawZone');
       var width = $( window ).width();
       //var width = $('drawZone').width();
       console.log("width",width);
       //$('body').bind('touchmove', function(e){e.preventDefault()});
-    });
+    });*/
 
 
   }
@@ -281,6 +283,7 @@ showSpinner :boolean =true;
         this.countUnreadHistory(this.messages);
         console.log("messages history:" ,this.messages);
         //this.scrollToBottom();
+        this.showSpinner=false
 
       });
 
@@ -499,7 +502,6 @@ previewImg(img){
           }
           this.searchUsers = this.users;
           console.log(this.searchUsers);
-this.showSpinner=false
       });
 
 
@@ -581,8 +583,37 @@ formatDate(date,display_date) {
   if(display_date==false){  return strTime;
 }
   return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear();
+}
 
+showPorfileStatusList(){
+  /*
+  if(this.profile_status_list==true){
+    return this.profile_status_list=false;
+  }else{
+    return this.profile_status_list=true;
+  }*/
+}
 
+changeStatus(status){
+  /*
+  if(status=='active'&& this.profile_status=='offline'){
+    this.initIoConnection();
+    $("#profile-img").removeClass("offline");
+    $("#profile-img").addClass("online");
+    this.profile_status='active';
+  }
+  if(status=='offline'&& this.profile_status=='active'){
+    this.disconnect();
+    $("#profile-img").removeClass("online");
+    $("#profile-img").addClass("offline");
+    this.profile_status='offline';
+
+    this.users.forEach(x=>x.online=false);
+    this.searchUsers=this.users;
+    console.log("u", this.users);
+  }
+  return this.profile_status_list=false;
+  */
 }
 
 }
