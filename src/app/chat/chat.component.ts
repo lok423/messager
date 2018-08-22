@@ -8,6 +8,7 @@ import { Event } from './shared/model/event';
 import { Message, DrawImg, UploadFile, UploadImg } from './shared/model/message';
 //import { User } from './shared/model/user';
 import { SocketService } from './shared/services/socket.service';
+import { ContactListService } from './shared/services/contact-list.service';
 
 import { DrawboardComponent } from '../drawboard/drawboard.component';
 import { PreviewImgComponent } from '../preview-img/preview-img.component';
@@ -19,7 +20,7 @@ const upload_URL =appConfig.apiUrl+'/api/upload-file';
 
 import { first } from 'rxjs/operators';
 
-import { User } from '../_models';
+import { User, User2 } from '../_models';
 import { UserService } from '../_services';
 import { appConfig } from '../app.config';
 
@@ -66,12 +67,17 @@ currentUser: User;
 users: User[] = [];
 
 showChatPage=true;
-searchUsers :User[]=[];
+searchUsers :User2[]=[];
 searchText:string='';
 
 showSpinner :boolean =true;
 profile_status_list:boolean =false;
 profile_status:string='active';
+
+
+
+currentUser2:any ={user_id:Number,username:''};
+contactList:User2[] = [];
 
 
 
@@ -86,7 +92,12 @@ profile_status:string='active';
 
   constructor(private socketService: SocketService,
 
-    public dialog: MatDialog,private http: HttpClient,private userService: UserService) {this.currentUser = JSON.parse(localStorage.getItem('currentUser')); console.log(this.currentUser);this.loadAllUsers(); }
+    public dialog: MatDialog,private http: HttpClient,private userService: UserService, private ContactListService: ContactListService) {this.currentUser = JSON.parse(localStorage.getItem('currentUser')); console.log(this.currentUser);this.loadAllUsers();
+    this.getContactList();
+    //console.log(localStorage.getItem('lsaUserName'));
+    this.currentUser2 = {username:localStorage.getItem('lsaUserName'),user_id:localStorage.getItem('lsaUserId')};
+    console.log(this.currentUser2);
+}
 
   ngOnInit(): void {
     //console.log(localStorage.currentUser);
@@ -109,7 +120,6 @@ profile_status:string='active';
       console.log("width",width);
       //$('body').bind('touchmove', function(e){e.preventDefault()});
     });*/
-
 
   }
 
@@ -162,8 +172,8 @@ profile_status:string='active';
     this.updateSelectedUser();
     user.unreadCount=0;
     this.socketService.updateUnreadMsg(
-      {selectedUserName:user.username,
-      currentUserName:this.currentUser.username,
+      {selectedUserId:user.user_id,
+      currentUserId:this.currentUser2.user_id,
       createdAt: new Date()
     });
     console.log(user);
@@ -171,23 +181,23 @@ profile_status:string='active';
 
   }
 
-  private loadOnlineUser(allUsers,userList){
+  private loadOnlineUser(contactList,userList){
       console.log("userlist",userList);
-      console.log("alllist",allUsers);
+      console.log("alllist",contactList);
 
-    for(var i=0;i<allUsers.length;i++){
+    for(var i=0;i<contactList.length;i++){
       var found =false;
       for(var j=0;j<userList.length;j++){
-        if(allUsers[i].username==userList[j].username){
+        if(contactList[i].user_id==userList[j].user_id){
           //allUsers[i].channelid=userList[j].channelid;
           console.log("true");
 
-          allUsers[i].online = true;
+          contactList[i].online = true;
           found =true;
         }
       }
       if(found==false){
-        allUsers[i].online =false;
+        contactList[i].online =false;
         //allUsers[i].channelid='';
       }
     }
@@ -208,7 +218,7 @@ profile_status:string='active';
       this.updateSelectedUser();
       //this.loadAllUsers();
       setTimeout(() => {
-      this.loadOnlineUser(this.users,this.userList);
+      this.loadOnlineUser(this.contactList,this.userList);
     }, 1000);
 
       //console.log(userList);
@@ -231,7 +241,7 @@ profile_status:string='active';
     this.updateSelectedUser();
     //this.loadAllUsers();
     setTimeout(() => {
-    this.loadOnlineUser(this.users,this.userList);
+    this.loadOnlineUser(this.contactList,this.userList);
   }, 1000);
 
   });
@@ -302,8 +312,8 @@ profile_status:string='active';
           fromid: this.socketId,
             toid : this.selectedUser.channelid,
           msg : message,
-          senderName : this.currentUser.username,
-          receiverName : this.selectedUser.username,
+          sender_id : this.currentUser2.user_id,
+          receiver_id : this.selectedUser.user_id,
           //createAt: Date.now(),
           selfsockets: this.selfsockets,
           createdAt: new Date()
@@ -315,7 +325,7 @@ profile_status:string='active';
 
   getselfsockets(){
     for(var i =0; i<this.userList.length;i++){
-      if(this.userList[i].username==this.currentUser.username){
+      if(this.userList[i].user_id==this.currentUser2.user_id){
         this.selfsockets =this.userList[i].channelid;
       }
     }
@@ -326,7 +336,7 @@ profile_status:string='active';
   updateSelectedUser(){
     if(this.selectedUser){
       for(var i =0; i<this.userList.length;i++){
-        if(this.userList[i].username==this.selectedUser.username){
+        if(this.userList[i].user_id==this.selectedUser.user_id){
           this.selectedUser =this.userList[i];
         }
       }
@@ -349,8 +359,8 @@ public sendDrawImg(img: string): void {
           toid : this.selectedUser.channelid,
         //msg : message,
         drawImg:img,
-        senderName : this.currentUser.username,
-        receiverName : this.selectedUser.username,
+        sender_id : this.currentUser2.user_id,
+        receiver_id : this.selectedUser.user_id,
         //createAt: Date.now(),
         selfsockets: this.selfsockets,
         createdAt: new Date()
@@ -368,8 +378,8 @@ public sendFile(path: string, name: string): void {
         //msg : message,
         filename: name,
         file :path,
-        senderName : this.currentUser.username,
-        receiverName : this.selectedUser.username,
+        sender_id : this.currentUser2.user_id,
+        receiver_id : this.selectedUser.user_id,
         //createAt: Date.now(),
         selfsockets: this.selfsockets,
         createdAt: new Date()
@@ -386,8 +396,8 @@ public sendImg(path: string, name: string): void {
         //msg : message,
         imgname: name,
         img :path,
-        senderName : this.currentUser.username,
-        receiverName : this.selectedUser.username,
+        sender_id : this.currentUser2.user_id,
+        receiver_id : this.selectedUser.user_id,
         //createAt: Date.now(),
         selfsockets: this.selfsockets,
         createdAt: new Date()
@@ -500,7 +510,7 @@ previewImg(img){
               this.users.splice(i,1);
             }
           }
-          this.searchUsers = this.users;
+          //this.searchUsers = this.users;
           console.log(this.searchUsers);
       });
 
@@ -522,33 +532,33 @@ previewImg(img){
   }
 
   loadNewMsg(){
-    for(var j=0;j<this.users.length;j++){
+    for(var j=0;j<this.contactList.length;j++){
 
       for(var i=0;i<this.messages.length;i++){
-        if(this.messages[i].senderName==this.users[j].username || this.messages[i].receiverName==this.users[j].username){
+        if(this.messages[i].sender_id==this.contactList[j].user_id || this.messages[i].receiver_id==this.contactList[j].user_id){
           //var date = new Date(this.messages[i].createdAt);
           //this.messages[i].createdAt = this.renderDate(date);
-          this.users[j].newestMsg=this.messages[i];
+          this.contactList[j].newestMsg=this.messages[i];
         }
       }
     }
-    console.log(this.users);
+    console.log(this.contactList);
   }
 
 countInComingMsg(msg){
   console.log(msg);
-  for(var j=0;j<this.users.length;j++){
-    if(msg.senderName==this.users[j].username){
-      this.users[j].unreadCount++;
+  for(var j=0;j<this.contactList.length;j++){
+    if(msg.sender_id==this.contactList[j].user_id){
+      this.contactList[j].unreadCount++;
     }
 }
 }
 
 countUnreadHistory(msgList){
-  for(var j=0;j<this.users.length;j++){
+  for(var j=0;j<this.contactList.length;j++){
     for(var i=0;i<msgList.length;i++){
-      if(msgList[i].read==false && msgList[i].senderName==this.users[j].username){
-        this.users[j].unreadCount++;
+      if(msgList[i].read==false && msgList[i].sender_id==this.contactList[j].user_id){
+        this.contactList[j].unreadCount++;
       }
     }
 
@@ -556,7 +566,10 @@ countUnreadHistory(msgList){
 }
 
 showSearchUser(key){
-  const result = this.users.filter(user => user.username.toLowerCase().includes(key.toLowerCase()));
+
+  const result = this.contactList.filter(user =>
+
+    user.first_name.toLowerCase().includes(key.toLowerCase()) || user.last_name.toLowerCase().includes(key.toLowerCase()));
   this.searchUsers = result;
 }
 
@@ -615,5 +628,21 @@ changeStatus(status){
   return this.profile_status_list=false;
   */
 }
+
+getContactList(){
+  this.ContactListService.getContacts().subscribe(users => {
+
+      for(var key in users['dataCon']){
+        var user = users['dataCon'][key];
+        var assign = Object.assign({online:false,newestMsg:'',unreadCount:0},user);
+        this.contactList.push(assign);
+      }
+      console.log(this.contactList);
+      this.searchUsers = this.contactList;
+  });
+}
+
+
+
 
 }

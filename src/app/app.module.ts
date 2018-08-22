@@ -13,6 +13,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { MaterialModule } from './shared/material/material.module';
 
 import { SocketService } from './chat/shared/services/socket.service';
+import { ContactListService } from './chat/shared/services/contact-list.service';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -138,7 +139,8 @@ MatBadgeModule,
     AuthenticationService,
     UserService,
     JwtInterceptorProvider,
-    ErrorInterceptorProvider
+    ErrorInterceptorProvider,
+    ContactListService
   ],
   bootstrap: [AppComponent],
   entryComponents: [PreviewImgComponent, DrawboardComponent]//,
