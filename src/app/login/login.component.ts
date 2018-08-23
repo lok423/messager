@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, AuthenticationService } from '../_services';
+import { AuthService, FacebookLoginProvider, GoogleLoginProvider, LinkedinLoginProvider } from 'angular-6-social-login-v2';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,9 @@ export class LoginComponent implements OnInit {
       private route: ActivatedRoute,
       private router: Router,
       private authenticationService: AuthenticationService,
-      private alertService: AlertService) {}
+      private alertService: AlertService,
+      private socialAuthService: AuthService
+    ) {}
 
   ngOnInit() {
       this.loginForm = this.formBuilder.group({
@@ -61,4 +64,52 @@ export class LoginComponent implements OnInit {
                   this.loading = false;
               });
   }
+  public socialSignIn(socialPlatform : string) {
+    let socialPlatformProvider;
+    if(socialPlatform == "facebook"){
+      socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
+    }else if(socialPlatform == "google"){
+      //socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
+    } else if (socialPlatform == "linkedin") {
+      socialPlatformProvider = LinkedinLoginProvider.PROVIDER_ID;
+    } else if (socialPlatform == "vkontakte") {
+      socialPlatformProvider = LinkedinLoginProvider.PROVIDER_ID;
+    }
+
+
+    this.socialAuthService.signIn(socialPlatformProvider).then(
+      (userData) => {
+        console.log(socialPlatform+" sign in data : " , userData);
+        // Now sign-in with userData
+        // ...
+
+        localStorage.setItem('currentUser', JSON.stringify({
+
+        _id:userData.id,
+        user_image:userData.image,
+        username:userData.name,
+        token:userData.token,
+        provider:userData.provider
+
+      }));
+      
+
+        //this.router.navigate([this.returnUrl]);
+        this.authenticationService.fb_login(userData)
+            .pipe(first())
+            .subscribe(
+                data => {
+                  console.log(data);
+                    this.router.navigate([this.returnUrl]);
+                },
+                error => {
+                  console.log(error);
+                    this.alertService.error(error);
+                    this.loading = false;
+                });
+      }
+    );
+  }
+
+
 }

@@ -4,3 +4,10 @@
   overflow: hidden !important;
   touch-action: none !important;
 }
+
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}

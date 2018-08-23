@@ -67,7 +67,16 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptorProvider, ErrorInterceptorProvider } from './_helpers/index';
-import { AlertService, AuthenticationService, UserService } from './_services/index';
+import { AlertService, AuthenticationService, UserService, getAuthServiceConfigs } from './_services/index';
+import {
+    SocialLoginModule,
+    AuthServiceConfig,
+    GoogleLoginProvider,
+    FacebookLoginProvider,
+    LinkedinLoginProvider,
+    VkontakteLoginProvider,
+} from "angular-6-social-login-v2";
+
 
 
 @NgModule({
@@ -130,7 +139,8 @@ MatBadgeModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    SocialLoginModule
   ],
   providers: [SocketService,
     AuthGuard,
@@ -138,7 +148,11 @@ MatBadgeModule,
     AuthenticationService,
     UserService,
     JwtInterceptorProvider,
-    ErrorInterceptorProvider
+    ErrorInterceptorProvider,
+    {
+      provide: AuthServiceConfig,
+      useFactory: getAuthServiceConfigs
+    }
   ],
   bootstrap: [AppComponent],
   entryComponents: [PreviewImgComponent, DrawboardComponent]//,
