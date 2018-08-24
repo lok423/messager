@@ -6,6 +6,7 @@ import { HomeComponent } from './home/index';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
 import { AuthGuard } from './_guards/index';
+import { NewDashboardComponent } from './dashboard/new-dashboard.component';
 
 
 const routes: Routes = [
@@ -15,7 +16,7 @@ const routes: Routes = [
     path: '', component: ChatComponent
   },
   {
-    path: 'dash', component: DashboardComponent, canActivate: [AuthGuard]
+    path: 'dash', component: NewDashboardComponent
   },
   { path: 'sercret', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },

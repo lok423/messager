@@ -15,7 +15,7 @@ import { MaterialModule } from './shared/material/material.module';
 import { SocketService } from './chat/shared/services/socket.service';
 import { ContactListService } from './chat/shared/services/contact-list.service';
 
-
+import {AutosizeModule} from 'ngx-autosize';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -58,6 +58,8 @@ import {
 import { UploaderComponent } from './uploader/uploader.component';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { NewDashboardComponent } from './dashboard/new-dashboard.component';
+
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
@@ -80,6 +82,7 @@ import { AlertService, AuthenticationService, UserService } from './_services/in
     UploaderComponent,
 
     DashboardComponent,
+    NewDashboardComponent,
 
     LoginComponent,
 
@@ -131,7 +134,8 @@ MatBadgeModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    AutosizeModule
   ],
   providers: [SocketService,
     AuthGuard,

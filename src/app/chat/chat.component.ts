@@ -92,34 +92,18 @@ contactList:User2[] = [];
 
   constructor(private socketService: SocketService,
 
-    public dialog: MatDialog,private http: HttpClient,private userService: UserService, private ContactListService: ContactListService) {this.currentUser = JSON.parse(localStorage.getItem('currentUser')); console.log(this.currentUser);//this.loadAllUsers();
+    public dialog: MatDialog,private http: HttpClient,private userService: UserService, private ContactListService: ContactListService) {
+      //this.loadAllUsers();
     this.getContactList();
-    //console.log(localStorage.getItem('lsaUserName'));
-    this.currentUser2 = {username:localStorage.getItem('lsaUserName'),user_id:localStorage.getItem('lsaUserId')};
+    this.currentUser2 = {username:localStorage.getItem('lsaUserName'),user_id:Number(localStorage.getItem('lsaUserId'))};
     console.log(this.currentUser2);
 }
 
   ngOnInit(): void {
-    //console.log(localStorage.currentUser);
-    //this.username= window.prompt('Enter Your Name');
-    //console.log(this.messages);
-
-    //console.log("drawZone", this.drawWidth,this.drawHeight);
-
     // Using timeout due to https://github.com/angular/angular/issues/14748
     setTimeout(() => {
-      //this.openUserPopup(this.defaultDialogUserParams);
-      //this.initIoConnection();
+      this.initIoConnection();
     }, 100);
-
-/*
-    $(document).ready(function(){
-      var box = document.querySelector('drawZone');
-      var width = $( window ).width();
-      //var width = $('drawZone').width();
-      console.log("width",width);
-      //$('body').bind('touchmove', function(e){e.preventDefault()});
-    });*/
 
   }
 
@@ -131,8 +115,7 @@ contactList:User2[] = [];
     console.log('-----' + document.body.clientWidth );
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      // this.imageData = result;
-      // this.sendDrawImg(this.imageData);
+
       this.sendDrawImg(dialogRef.componentInstance.imgageSrc);
     });
   }
@@ -207,7 +190,7 @@ contactList:User2[] = [];
   private initIoConnection(): void {
 
     this.socketService.initSocket();
-    this.socketService.init(this.currentUser);
+    this.socketService.init(this.currentUser2);
     //console.log("emit ", this.username);
     this.ioConnection = this.socketService.socket.on('userList',(userList,channelid) => {
       if(this.socketId === null){
@@ -499,6 +482,8 @@ previewImg(img){
     this.input_img.nativeElement.click();
   }
 
+
+/*
   private loadAllUsers() {
       this.userService.getAll().pipe(first()).subscribe(users => {
           this.users = users;
@@ -513,9 +498,7 @@ previewImg(img){
           //this.searchUsers = this.users;
           console.log(this.searchUsers);
       });
-
-
-  }
+  }*/
 
 
   disconnect(){
@@ -533,16 +516,13 @@ previewImg(img){
 
   loadNewMsg(){
     for(var j=0;j<this.contactList.length;j++){
-
       for(var i=0;i<this.messages.length;i++){
         if(this.messages[i].sender_id==this.contactList[j].user_id || this.messages[i].receiver_id==this.contactList[j].user_id){
-          //var date = new Date(this.messages[i].createdAt);
-          //this.messages[i].createdAt = this.renderDate(date);
+
           this.contactList[j].newestMsg=this.messages[i];
         }
       }
     }
-    console.log(this.contactList);
   }
 
 countInComingMsg(msg){
@@ -566,9 +546,7 @@ countUnreadHistory(msgList){
 }
 
 showSearchUser(key){
-
   const result = this.contactList.filter(user =>
-
     user.first_name.toLowerCase().includes(key.toLowerCase()) || user.last_name.toLowerCase().includes(key.toLowerCase()));
   this.searchUsers = result;
 }
@@ -633,9 +611,9 @@ getContactList(){
   this.ContactListService.getContacts().subscribe(users => {
     console.log(users);
 
-      for(var key in users['UserData']){
-        var user = users['UserData'][key];
-        console.log(user);
+      for(var key in users['dataCon']){
+        var user = users['dataCon'][key];
+        //console.log(user);
         var assign = Object.assign({online:false,newestMsg:'',unreadCount:0},user);
         this.contactList.push(assign);
       }

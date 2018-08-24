@@ -15,6 +15,7 @@ import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { pairwise } from 'rxjs/internal/operators/pairwise';
 import { Inject } from '@angular/core';
 import { ChatComponent } from '../chat/chat.component';
+import { style } from '@angular/animations';
 
 @Component({
   selector: 'app-drawboard',
@@ -56,6 +57,9 @@ export class DrawboardComponent implements AfterViewInit {
     winMobile: false
   };
 
+  public max_x = 0;
+  public max_y = 0;
+
   constructor(public thisDialogRef: MatDialogRef<DrawboardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: string) { }
 
@@ -66,6 +70,9 @@ export class DrawboardComponent implements AfterViewInit {
 
 
   public ngAfterViewInit() {
+    document.getElementById('eraser').style.display = 'block';
+    document.getElementById('pencil').style.display = 'none';
+
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
     this.cx = canvasEl.getContext('2d');
 
@@ -97,7 +104,8 @@ export class DrawboardComponent implements AfterViewInit {
 
     canvasEl.width = canvasEl.width * 0.75;
     canvasEl.height = canvasEl.height * 0.75;
-
+    this.width = canvasEl.width;
+    this.height = canvasEl.height;
 
     console.log(viewWidth);
 
@@ -262,6 +270,29 @@ preventDefault(e) {
       this.cx.lineTo(currentPos.x, currentPos.y);
       this.cx.stroke();
     }
+
+    let x1 = 0;
+    if (prevPos.x > currentPos.x) {
+      x1 = prevPos.x;
+    } else {
+      x1 = currentPos.x;
+    }
+
+    let y1 = 0;
+    if (prevPos.y > currentPos.y) {
+      y1 = prevPos.y;
+    } else {
+      y1 = currentPos.y;
+    }
+
+    if (x1 > this.max_x) {
+      this.max_x = parseInt(x1 + "");
+    }
+
+    if (y1 > this.max_y) {
+      this.max_y = parseInt(y1 + "");
+    }
+
   }
   onDrawImage(event) {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
@@ -293,15 +324,26 @@ preventDefault(e) {
     this.cx.strokeStyle = this.colorCode;
   }
   onEraseDraw(event) {
+    this.switchIcon();
     this.cx.strokeStyle = 'white';
   }
   onClearDraw(event) {
 
-      this.cx.clearRect(0, 0, this.width, this.height);
-    }
-    onPencilColor(event) {
+    this.cx.clearRect(0, 0, this.width, this.height);
+  }
+  onPencilColor(event) {
+    this.switchIcon();
+    this.cx.strokeStyle = this.colorCode;
+  }
 
-      this.cx.strokeStyle = this.colorCode;
+  switchIcon() {
+    if (document.getElementById('eraser').style.display === 'block') {
+      document.getElementById('eraser').style.display = 'none';
+      document.getElementById('pencil').style.display = 'block';
+    } else {
+      document.getElementById('eraser').style.display = 'block';
+      document.getElementById('pencil').style.display = 'none';
     }
+  }
 
 }

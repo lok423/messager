@@ -22,9 +22,7 @@ export class SocketService {
      socket;
     public initSocket(): void {
 
-      this.socket = socketIo(appConfig.apiUrl,{
-    query: {token: JSON.parse(localStorage.getItem('currentUser')).token}
-  });
+      this.socket = socketIo(appConfig.apiUrl);
 
 /*
    const promise =

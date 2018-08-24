@@ -1,0 +1,80 @@
+<p>
+  Click the button in the right bottom corner!
+</p>
+
+<!-- <ng-template #popContent>
+  Hello, <b>{{name}}</b>!
+  <app-chat></app-chat>
+</ng-template>
+
+<button id="chat-dropup2" type="button" class="btn btn-outline-primary" [ngbPopover]="popContent" [autoClose]="false" popoverTitle="Fancy content">
+  Chat
+
+</button> -->
+
+
+
+<div ngbDropdown id="chat-dropup">
+  <button class="btn btn-outline-primary chat-button" id="dropdownConfig" ngbDropdownToggle>
+    <mat-icon>chat</mat-icon>
+
+  </button>
+  <div #scrollMe ngbDropdownMenu aria-labelledby="dropdownConfig" class="chat-drop-menu">
+
+
+    <!-- <div class="container container-head">
+      <div class="btn-outline-primary pull-left head-button">Chat</div>
+      <div style="text-align:right;">
+        <button class="btn-outline-primary head-button">
+          <mat-icon class="" [inline]="true">group_add</mat-icon>
+        </button>
+        <button class="btn-outline-primary head-button">
+          <mat-icon class="" [inline]="true">videocam</mat-icon>
+        </button>
+        <button class="btn-outline-primary head-button">
+          <mat-icon class="" [inline]="true">close</mat-icon>
+        </button>
+      </div>
+    </div> -->
+    <app-chat></app-chat>
+
+  </div>
+</div>
+
+<!-- <button mat-icon-button [matMenuTriggerFor]="menu" id="chat-dropup2">
+  <mat-icon class="material-icons blue600">chat</mat-icon>
+  <span>Chat</span>
+</button>
+<mat-menu #menu="matMenu" [overlapTrigger]="false" id="my-mat-menu">
+  <div class="container" (click)="$event.stopPropagation();">
+    <div class="row">
+      <div class="btn-group">
+        <div class="col-6 col-sm-6">
+          Chat
+        </div>
+
+
+        <button mat-menu-item>
+          <mat-icon class="material-icons md-dark col-3 col-sm-3" >videocam</mat-icon>
+        </button>
+        <button mat-menu-item (click)="closeMyMenu()">
+          <mat-icon class="material-icons md-dark col-3 col-sm-3">close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default col-3">
+      <mat-icon>settings</mat-icon>
+    </button>
+    <button type="button" class="btn btn-default col-3">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button type="button" class="btn btn-default col-3">
+      <mat-icon>call</mat-icon>
+    </button>
+  </div>
+
+  <app-chat></app-chat>
+</mat-menu> -->

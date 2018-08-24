@@ -1,73 +1,52 @@
 <div #size id="drawboardDiv">
-  <!-- <ul [ngStyle]="{'width':width+'px'}"> -->
-    <ul>
-  <!--
-      <li>
-        <a (click)=onDrawImage($event)>
-          <i class="fa fa-picture-o" aria-hidden="true"></i>
-        </a>
-      </li>
--->
-      <li>
-        <a (click)=onEraseDraw($event)>
-          <i class="fa fa-eraser" aria-hidden="true"></i>
-        </a>
-      </li>
-      <li>
-        <a (click)=onPencilColor($event)>
-          <i class="fa fa-pencil" aria-hidden="true"></i>
-<!--
-        </a>
-      </li>
-      <li>
-        <a (click)=onClearDraw($event)>
-          <i class="fa fa-trash" aria-hidden="true"></i>-->
-        </a>
-      </li>
-      <li class="dropdown" >
-          <a class="dropbtn">
-            <i class="fa fa-paint-brush" aria-hidden="true"></i>
-          </a>
-          <div class="dropdown-content" *ngFor="let item of color">
-              <a (click)="onSelectColor(item)" [style.background-color]="item"></a>
-          </div>
-      </li>
-      <li>
-        <a></a>
-      </li>
-
-      <li class="dropdown">
+  <ul>
+    <li id="eraser">
+      <a (click)=onEraseDraw($event)>
+        <i class="fa fa-eraser" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li id=pencil>
+      <a (click)=onPencilColor($event)>
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="dropdown" >
         <a class="dropbtn">
-          <i class="fa fa-font" aria-hidden="true"></i>
+          <i class="fa fa-paint-brush" aria-hidden="true"></i>
         </a>
-        <div class="dropdown-content" *ngFor="let item of font">
-          <a (click)=onSelectFont(item)>{{item}}</a>
+        <div class="dropdown-content" *ngFor="let item of color" >
+            <a (click)="onSelectColor(item)" [style.background-color]="item"></a>
         </div>
-      </li>
+    </li>
+    <li>
+    </li>
+    <li class="dropdown">
+      <a class="dropbtn">
+        <i class="fa fa-font" aria-hidden="true"></i>
+      </a>
+      <div class="dropdown-content" *ngFor="let item of font" style="width:80px;">
+        <a (click)=onSelectFont(item) >{{item}}</a>
+      </div>
+    </li>
+    <li>
+    </li>
+    <li>
+      <a (click)=onClearDraw($event)>
+        <i class="fa fa-trash" aria-hidden="true"></i>
+      </a>
+    </li>
 
+    <li>
+      <a (click)=onDrawImage($event) >
+        <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+      </a>
+    </li>
 
-      <li>
-        <a></a>
-      </li>
-      <li>
-        <a (click)=onClearDraw($event)>
-          <i class="fa fa-trash" aria-hidden="true"></i>
-        </a>
-      </li>
-
-      <li>
-        <a (click)=onDrawImage($event) >
-          <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
-        </a>
-        <!--<button #closedialog [mat-dialog-close]="data.img" style="display:none;"></button>-->
-      </li>
-
-      <li class="toRight">
-        <a (click)=closeDrawWin()>
-          <i class="fa fa-window-close" aria-hidden="true"></i>
-        </a>
-      </li>
-  </ul>
-  <canvas #canvas touch-action="none"></canvas>
-  <!--<img [src]="imgageSrc" *ngIf="imgageSrc" />-->
+    <li class="toRight">
+      <a (click)=closeDrawWin()>
+        <i class="fa fa-window-close" aria-hidden="true"></i>
+      </a>
+    </li>
+</ul>
+<canvas #canvas touch-action="none"></canvas>
 </div>

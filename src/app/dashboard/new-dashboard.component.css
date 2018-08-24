@@ -1,0 +1,91 @@
+#chat-dropup{
+    position: fixed;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    
+}
+#chat-dropup2{
+    position: fixed;
+    bottom: 1em;
+    right: 5em;
+}
+
+.chat-button {
+    font-size: 15px;
+    height: 30px;
+    width: 90px;
+}
+
+.material-icons.blue600 { color: rgb(32, 104, 240); }
+.material-icons.md-dark { 
+    color: rgba(255, 255, 255); 
+    font-size: 15px;
+    margin: 1px;
+    padding: 1px;
+    float: right;
+}
+
+.container-head {
+    background-color: rgb(32, 104, 240);
+    color:white;
+    font: 18px;
+    margin-top: -10px;
+    padding: 10px;
+    /* text-align:right; */
+}
+.chat-drop-menu {
+    padding: 0;
+    /* min-width: 300px;
+    max-height: 500px; 
+    overflow-y: auto;  */
+}
+
+.dropdown-toggle::after {
+    display:none;
+}
+
+.head-button {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 1);
+    border: 0;
+}
+
+.message1,.message2 { 
+    width: 200px; 
+    height: 80px; 
+    margin: 100px auto; 
+    background-color: green; 
+    border-bottom-color:green;/*为了给after伪元素自动继承*/ 
+    color: #fff; font-size: 12px; 
+    font-family: Arial; line-height: 18px; 
+    padding: 5px 12px 5px 12px; 
+    box-sizing: border-box; 
+    border-radius: 6px; 
+    position: relative; 
+    word-break: break-all; 
+} 
+
+.message1::after { 
+    content: ''; 
+    position: absolute; 
+    top: 0; right: -24px; 
+    width: 20px; 
+    height: 20px; 
+    border-width: 0 0 20px 20px; 
+    border-style: solid; 
+    border-bottom-color: inherit; /*自动继承父元素的border-bottom-color*/ 
+    border-left-color: transparent; 
+    border-radius: 0 0 60px 0; 
+} 
+/** 通过对小正方形旋转45度解决 **/ 
+.message2::before { 
+    content: ''; 
+    position: absolute; 
+    top: 50%; 
+    left: -5px; 
+    width: 10px; 
+    height: 10px; 
+    margin-top: -10px; 
+    background: inherit;/*自动继承父元素的背景*/ 
+    transform: rotate(45deg); 
+} 
