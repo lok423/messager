@@ -70,7 +70,7 @@ showChatPage=true;
 searchUsers :User2[]=[];
 searchText:string='';
 
-showSpinner :boolean =true;
+showSpinner :boolean =false;
 profile_status_list:boolean =false;
 profile_status:string='active';
 
@@ -92,7 +92,7 @@ contactList:User2[] = [];
 
   constructor(private socketService: SocketService,
 
-    public dialog: MatDialog,private http: HttpClient,private userService: UserService, private ContactListService: ContactListService) {this.currentUser = JSON.parse(localStorage.getItem('currentUser')); console.log(this.currentUser);this.loadAllUsers();
+    public dialog: MatDialog,private http: HttpClient,private userService: UserService, private ContactListService: ContactListService) {this.currentUser = JSON.parse(localStorage.getItem('currentUser')); console.log(this.currentUser);//this.loadAllUsers();
     this.getContactList();
     //console.log(localStorage.getItem('lsaUserName'));
     this.currentUser2 = {username:localStorage.getItem('lsaUserName'),user_id:localStorage.getItem('lsaUserId')};
@@ -109,7 +109,7 @@ contactList:User2[] = [];
     // Using timeout due to https://github.com/angular/angular/issues/14748
     setTimeout(() => {
       //this.openUserPopup(this.defaultDialogUserParams);
-      this.initIoConnection();
+      //this.initIoConnection();
     }, 100);
 
 /*
@@ -631,9 +631,11 @@ changeStatus(status){
 
 getContactList(){
   this.ContactListService.getContacts().subscribe(users => {
+    console.log(users);
 
-      for(var key in users['dataCon']){
-        var user = users['dataCon'][key];
+      for(var key in users['UserData']){
+        var user = users['UserData'][key];
+        console.log(user);
         var assign = Object.assign({online:false,newestMsg:'',unreadCount:0},user);
         this.contactList.push(assign);
       }

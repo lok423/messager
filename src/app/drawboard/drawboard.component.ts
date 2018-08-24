@@ -117,7 +117,7 @@ export class DrawboardComponent implements AfterViewInit {
         // 判断默认行为是否已经被禁用
         //if (!e.defaultPrevented) {
             //e.preventDefault();
-            $('body').addClass('stop-scrolling');
+            //$('body').addClass('stop-scrolling');
             //console.log("add class")
             //$('body').bind('touchmove', function(e){e.preventDefault()})
         //}
@@ -135,7 +135,7 @@ export class DrawboardComponent implements AfterViewInit {
     //}
     //$('body').removeClass('stop-scrolling');
     $(document).ready(function(){
-      $('body').removeClass('stop-scrolling');
+      //$('body').removeClass('stop-scrolling');
       //console.log("remove class");
       //$('body').bind('touchmove', function(e){e.preventDefault()});
     });
@@ -148,7 +148,7 @@ export class DrawboardComponent implements AfterViewInit {
 
 
 $(document).ready(function(){
-  $('body').addClass('stop-scrolling');
+  //$('body').addClass('stop-scrolling');
   //console.log("add class");
   //$('body').bind('touchmove', function(e){e.preventDefault()});
 });
@@ -163,7 +163,7 @@ $(document).ready(function(){
 
   }else{
     $(document).ready(function(){
-      $('body').removeClass('stop-scrolling');
+      //$('body').removeClass('stop-scrolling');
       //console.log("remove class");
       //$('body').bind('touchmove', function(e){e.preventDefault()});
     });
@@ -172,7 +172,7 @@ $(document).ready(function(){
       }, false);
       //$('body').unbind('touchmove');
 
-        $('body').removeClass('stop-scrolling');
+        //$('body').removeClass('stop-scrolling');
 
 
 
@@ -190,7 +190,7 @@ $(document).ready(function(){
 preventDefault(e) {
   e = e || window.event;
   if (e.preventDefault)
-      e.preventDefault();
+      //e.preventDefault();
   e.returnValue = false;
 }
 
@@ -225,7 +225,7 @@ preventDefault(e) {
     private touchcaptureEvents(canvasEl: HTMLCanvasElement) {
       const obsMouseDown = fromEvent(canvasEl, 'touchstart').pipe(
         switchMap((e) => {
-          e.preventDefault();
+          //e.preventDefault();
             return fromEvent(canvasEl, 'touchmove').pipe(
               takeUntil(fromEvent(canvasEl, 'touchend')),
               pairwise()

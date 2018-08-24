@@ -10,7 +10,7 @@
       <div id="sidepanel">
     		<div id="profile">
     			<div class="wrap">
-    				<img id="profile-img" src="https://api.adorable.io/avatars/285/{{currentUser.username}}.png" class="online" alt="" (click)="showPorfileStatusList()"/>
+    				<img id="profile-img" src="https://api.adorable.io/avatars/285/{{currentUser2.user_id}}.png" class="online" alt="" (click)="showPorfileStatusList()"/>
     				<p>{{currentUser2.username}} </p>
     				<i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
             <a style="float: right;color:white;" [routerLink]="['/login']" (click)="disconnect()">Logout</a>
@@ -66,12 +66,12 @@
               <div class="spinner"  *ngIf="showSpinner==true">
                 <mat-spinner ></mat-spinner>
               </div>
-            <div *ngFor="let user of searchUsers">
+            <div *ngFor="let user of contactList">
               <div *ngIf="user.newestMsg">
                 <li class="contact" (click)="selectUser(user)" >
                   <div class="wrap">
                     <span class="contact-status online" [ngClass]="{'contact-status online': user.online==true , 'contact-status': user.online==false  }"></span>
-                    <img src="https://api.adorable.io/avatars/285/{{user.username}}.png" alt="" />
+                    <img src="https://api.adorable.io/avatars/285/{{user.user_id}}.png" alt="" />
 
                     <div class="meta">
                       <div *ngIf="user.unreadCount>0;then unreadCount;else noCount">
@@ -82,7 +82,7 @@
                     <ng-template #noCount>
                     <p class="name">{{user.first_name}} {{user.last_name}} </p>
                   </ng-template>
-                      <p class="preview" *ngIf="user.newestMsg.senderName==currentUser.username; else elseuser">
+                      <p class="preview" *ngIf="user.newestMsg.sender_id==currentUser2.user_id; else elseuser">
                           <span>You: </span> {{user.newestMsg.msg}}
                           <span *ngIf="user.newestMsg.img">
                             [photo]
@@ -221,7 +221,7 @@
       <!--<div class="col-lg-12 col-sm-12" style="padding:0px !important;">-->
         <div id="content" class="content">
         <div class="contact-profile">
-    			<img src="https://api.adorable.io/avatars/285/{{selectedUser.username}}.png" alt="" />
+    			<img src="https://api.adorable.io/avatars/285/{{selectedUser.user_id}}.png" alt="" />
     			<p>{{selectedUser.first_name}} {{selectedUser.last_name}}</p>
     			<div class="social-media">
 
@@ -235,20 +235,20 @@
         <div class="messages">
           <ul  class="chat" #scrollMe [scrollTop]="scrollMe.scrollHeight" *ngIf="messages.length > 0">
               <div *ngFor="let message of messages">
-                <div *ngIf="(message.senderName==currentUser.username && selectedUser.username==message.receiverName) || selectedUser.username== message.senderName">
+                <div *ngIf="(message.sender_id==currentUser2.user_id && selectedUser.user_id==message.receiver_id) || selectedUser.user_id== message.sender_id">
 
-            <li [ngClass]="{'sent': (message.senderName==currentUser.username && selectedUser.username==message.receiverName) , 'replies': selectedUser.username== message.senderName  }">
-              <div *ngIf="(message.senderName==currentUser.username && selectedUser.username==message.receiverName)|| selectedUser.username== message.senderName">
+            <li [ngClass]="{'sent': (message.sender_id==currentUser2.user_id && selectedUser.user_id==message.receiver_id) , 'replies': selectedUser.user_id== message.sender_id  }">
+              <div *ngIf="(message.sender_id==currentUser2.user_id && selectedUser.user_id==message.receiver_id)|| selectedUser.user_id== message.sender_id">
                 <div *ngIf=" message.msg ">
-              <img src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="" />
+              <img src="https://api.adorable.io/avatars/285/{{message.sender_id}}.png" alt="" />
               <p>{{ message.msg }}</p>
             </div>
             <div *ngIf="message.drawImg">
-              <img src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="" />
+              <img src="https://api.adorable.io/avatars/285/{{message.sender_id}}.png" alt="" />
               <p><img src="{{message.drawImg}}" style="width:100%;" (click)="previewImg(message.drawImg)"></p>
             </div>
             <div *ngIf="message.file">
-              <img src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="" />
+              <img src="https://api.adorable.io/avatars/285/{{message.sender_id}}.png" alt="" />
               <p>  <i class="material-icons">
                 folder
                 </i>
@@ -256,7 +256,7 @@
               </p>
             </div>
             <div *ngIf="message.img">
-              <img src="https://api.adorable.io/avatars/285/{{message.senderName}}.png" alt="" />
+              <img src="https://api.adorable.io/avatars/285/{{message.sender_id}}.png" alt="" />
               <p style="width: 200px;">
                 <img style="width: 100%;" src="https://intense-headland-70474.herokuapp.com/api/download-file/{{message.imgname}}"  >
               </p>
